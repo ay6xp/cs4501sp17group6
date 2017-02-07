@@ -1,0 +1,47 @@
+Models
+
+Users
+  - name
+  - password
+  - email address
+  - phone number
+
+  - has many Listings (author, posted)
+  - has many Listings (favorited, watching, saved)
+  
+Listings
+  - title
+  - address
+  - type (house, apartment, townhome, etc)
+  - number of bedrooms
+  - number of bathrooms
+  - price
+  - sqft
+  - lot size
+  - occupancy
+  - availablilty (status)
+  - images (the images themselves)
+  - description
+  
+  - has a User
+  - has a Tag Cluster
+
+  
+Tag Clusters
+  - laundry
+  - parking
+  - pet friendly
+  - smoking
+  - water
+  - gas
+  - power
+  - wifi
+  - wheelchair access
+  - furnished
+  - balcony
+  - yard
+  - images
+  - gym
+  - maintenance
+  
+  - has a Listing
