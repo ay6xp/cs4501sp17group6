@@ -1,7 +1,8 @@
 Models
 
 Users
-  - name
+  - username (pk)
+  - display name
   - password
   - email address
   - phone number
@@ -10,6 +11,7 @@ Users
   - has many Listings (favorited, watching, saved)
   
 Listings
+  - id (pk)
   - title
   - address
   - type (house, apartment, townhome, etc)
@@ -44,4 +46,4 @@ Tag Clusters
   - gym
   - maintenance
   
-  - has a Listing
+  - has a Listing (pk)
