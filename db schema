@@ -6,6 +6,7 @@ Users
   - password
   - email address
   - phone number
+  - joined date
 
   - has many Listings (author, posted)
   - has many Listings (favorited, watching, saved)
@@ -24,6 +25,8 @@ Listings
   - availablilty (status)
   - images (the images themselves)
   - description
+  - post date
+  - last edited date
   
   - has a User
   - has a Tag Cluster
