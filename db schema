@@ -21,11 +21,14 @@ Listings
   - price
   - sqft
   - lot size
-  - occupancy
-  - availablilty (status)
+  - max occupancy
+  - availablilty start
+  - availability end
+  - availability status
   - images (the images themselves)
   - description
   - post date
+  - post expiration date
   - last edited date
   
   - has a User
