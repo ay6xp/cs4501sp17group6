@@ -9,9 +9,6 @@ class User(models.Model):
     phone_num = models.CharField(max_length=10)
     joined_date = models.DateTimeField(auto_now_add=True)
 
-    # relationships
-    favorite_listings = models.ManyToManyField(Listing)
-
     def __str__(self):
         return self.username
 
@@ -21,10 +18,10 @@ class Listing(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=200)
     address = models.CharField(max_length=200)
-    num_of_bedrooms = models.PositiveSmallIntegerField(max_length=5)
-    num_of_bathrooms = models.PositiveSmallIntegerField(max_length=5)
-    price = models.PositiveSmallIntegerField(max_length=50)
-    sqft = models.PositiveSmallIntegerField(max_length=50)
+    num_of_bedrooms = models.PositiveSmallIntegerField()
+    num_of_bathrooms = models.PositiveSmallIntegerField()
+    price = models.PositiveSmallIntegerField()
+    sqft = models.PositiveSmallIntegerField()
     LOT_CHOICES = (
         ("S", "Small"),
         ("M", "Medium"),
@@ -32,7 +29,7 @@ class Listing(models.Model):
     )
     lot_size = models.CharField(max_length=1,
                   choices=LOT_CHOICES)
-    max_occupancy = models.PositiveSmallIntegerField(max_length=5)
+    max_occupancy = models.PositiveSmallIntegerField()
     availablilty_start = models.DateField()
     availability_end = models.DateField()
     AVAILABILITY_CHOICES = (
@@ -42,14 +39,15 @@ class Listing(models.Model):
     availability_status = models.CharField(max_length=5,
                   choices=AVAILABILITY_CHOICES,
                   default="AVAIL")
-    images = models.ImageField()
+    #images = models.ImageField()
     description = models.TextField()
     post_date = models.DateTimeField(auto_now_add=True)
     post_expiration_date = models.DateTimeField()
     last_edited_date = models.DateTimeField()
 
     # relationships
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="author")
+    watching_user = models.ManyToManyField(User, related_name="watcher")
 
     def __str__(self):
         return "Title: {0}, Address: {1}".format(self.title, self.address)
