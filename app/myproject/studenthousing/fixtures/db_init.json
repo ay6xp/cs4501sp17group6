@@ -1,0 +1,55 @@
+[
+	{
+		"model": "studenthousing.User",
+    	"pk": "jane_doe",
+    	"fields": {
+          "username": "jane_doe",
+      		"display_name": "Jane Doe",
+      		"password": "password",
+      		"email": "jane_doe_01@gmail.com",
+      		"phone_num": "4341234567",
+      		"joined_date": "2017-02-14 08:30"
+    	}
+	},
+	{
+		"model": "studenthousing.Listing",
+    	"pk": 1,
+    	"fields": {
+      		"title": "Townhouse Available in Friendly Neighborhood",
+      		"address": "123 Memory Lane Charlottesville, VA 22904",
+      		"num_of_bedrooms": "4",
+      		"num_of_bathrooms": "2",
+      		"price": "1500",
+      		"sqft": "1765",
+      		"lot_size": "S",
+      		"max_occupancy": "4",
+      		"availablilty_start": "2017-03-11",
+      		"availability_end": "2017-07-30",
+      		"availability_status": "Avail",
+      		"description": "A beautiful townhouse available for sale in Charlottesville, VA!",
+      		"post_date": "2017-03-11 07:15",
+      		"post_expiration_date": "2017-07-30 11:59",
+      		"last_edited_date": "2017-03-14 03:30"
+    	}
+	},
+	{
+		"model": "studenthousing.Tag_Cluster",
+    	"fields": {
+      		"laundry": "True",
+      		"parking": "True",
+      		"pet_friendly": "False",
+      		"smoking": "False",
+      		"water": "True",
+      		"gas": "True",
+      		"power": "True",
+      		"wifi": "True",
+      		"wheelchair_access": "True",
+      		"furnished": "False",
+      		"balcony": "False",
+      		"yard": "True",
+      		"images": "False",
+      		"gym": "False",
+      		"maintenance": "True"
+    	}
+	}
+]
