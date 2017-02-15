@@ -1,0 +1,4 @@
+myproject/__pycache__/
+migrations/
+*.pyc
+db/
