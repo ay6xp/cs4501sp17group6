@@ -22,7 +22,7 @@ def listings(request):
 def listing_detail(request, listing_id):
 	curr_listing = Listing.objects.all().filter(id=listing_id)
 	if curr_listing.count() == 1:
-		return JsonResponse(list(curr_listing))
+		return JsonResponse(list(curr_listing), safe=False)
 	else:
 		response_data = {}
 		response_data['result'] = 'error'
@@ -37,12 +37,12 @@ def users(request):
 		response_data['message'] = 'No users exist at this time.'
 		return JsonResponse(response_data)
 	else:
-		return JsonResponse(list(users))
+		return JsonResponse(list(users), safe=False)
 
 def user_detail(request, username):
 	curr_user = User.objects.all().filter(username=username)
 	if curr_user.count() == 1:
-		return JsonResponse(list(curr_user))
+		return JsonResponse(list(curr_user), safe=False)
 	else:
 		response_data = {}
 		response_data['result'] = 'error'
