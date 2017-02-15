@@ -224,3 +224,30 @@ def user_detail(request, id):
 #
 #	"delete" functionality of User CRUD
 #
+@csrf_exempt
+def user_delete(request, id):
+	if request.method == 'GET':
+		# GET request
+
+		# does this user exist?
+		if User.objects.all().filter(id=id).exists():
+			# yes, user exists, so we can delete them
+			curr_user = User.objects.all().get(id=id).delete()
+			response_data = {}
+			response_data['ok'] = 'true'
+			response_data['message'] = 'no user %s successfully deleted' % id
+			return JsonResponse(response_data)
+
+		else:
+			# no, that user doesn't exist, so we can't delete them
+			response_data = {}
+			response_data['ok'] = 'false'
+			response_data['message'] = 'no user exists with the id %s' % id
+			return JsonResponse(response_data)
+
+	else:
+	# POST (or other) request
+		response_data = {}
+		response_data['ok'] = 'false'
+		response_data['message'] = 'this action only supports GET requests'
+		return JsonResponse(response_data)
