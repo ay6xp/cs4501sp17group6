@@ -4,7 +4,6 @@
     	"pk": 1,
     	"fields": {
           	"username": "jane_doe",
-      		"display_name": "Jane Doe",
       		"password": "password",
       		"email": "jane_doe_01@gmail.com",
       		"phone_num": "4341234567",
