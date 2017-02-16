@@ -3,7 +3,7 @@
 		"model": "studenthousing.User",
     	"pk": "jane_doe",
     	"fields": {
-          "username": "jane_doe",
+          	"username": "jane_doe",
       		"display_name": "Jane Doe",
       		"password": "password",
       		"email": "jane_doe_01@gmail.com",
@@ -30,26 +30,21 @@
       		"post_date": "2017-03-11 07:15",
       		"post_expiration_date": "2017-07-30 11:59",
       		"last_edited_date": "2017-03-14 03:30"
-    	}
-	},
-	{
-		"model": "studenthousing.Tag_Cluster",
-    	"fields": {
-      		"laundry": "True",
-      		"parking": "True",
-      		"pet_friendly": "False",
-      		"smoking": "False",
-      		"water": "True",
-      		"gas": "True",
-      		"power": "True",
-      		"wifi": "True",
-      		"wheelchair_access": "True",
-      		"furnished": "False",
-      		"balcony": "False",
-      		"yard": "True",
-      		"images": "False",
-      		"gym": "False",
-      		"maintenance": "True"
+		"laundry" : "false"
+	    	"parking" : "false"
+	    	"pet_friendly" : "false"
+	    	"smoking" : "false"
+	    	"water" : "false"
+	    	"gas" : "false"
+	    	"power" : "false"
+	    	"wifi" : "false"
+	    	"wheelchair_access" : "false"
+	    	"furnished" : "false"
+	    	"balcony" : "false"
+	    	"yard" : "false"
+	    	"images" : "false"
+	    	"gym" : "false"
+	    	"maintenance" : "false"
     	}
 	}
 ]
