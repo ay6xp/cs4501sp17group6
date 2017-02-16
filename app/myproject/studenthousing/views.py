@@ -21,13 +21,32 @@ def index(request):
 #	list all Listings
 #
 def listings(request):
-	listings = Listing.objects.all().values()
-	if listings.count() == 0:
+	# what type of HTTP request was made?
+	if request.method == 'GET':
+		# GET request
+
+		# are there listings to show?
+		listings = Listing.objects.all().values()
+		if listings.count() == 0:
+			# no, there are no listings
+			response_data = {}
+			response_data['ok'] = 'true'
+			response_data['info'] = 'no listings exist at this time'
+			return JsonResponse(response_data)
+
+		else:
+			# yes, there are listings
+			response_data = {}
+			response_data['ok'] = 'true'
+			response_data['info'] = list(listings)
+			return JsonResponse(response_data)
+
+	else:
+		# POST (or other) request
 		response_data = {}
-		response_data['ok'] = 'true'
-		response_data['message'] = 'no listings exist at this time'
+		response_data['ok'] = 'false'
+		response_data['message'] = 'this action only supports GET requests'
 		return JsonResponse(response_data)
-	return JsonResponse(list(listings), safe=False)
 
 #
 #	"create" functionality of Listing CRUD
