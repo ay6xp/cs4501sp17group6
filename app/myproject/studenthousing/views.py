@@ -128,14 +128,119 @@ def listing_create(request):
 #
 @csrf_exempt
 def listing_detail(request, id):
-	curr_listing = Listing.objects.all().filter(id=id)
-	if curr_listing.count() == 1:
-		return JsonResponse(list(curr_listing), safe=False)
+	# what kind of request was it?
+	if request.method == 'POST':
+		# POST request
+		# create a form instance and populate it with data from the request
+		form = ListingForm(request.POST)
+		if form.is_valid():
+			# process data in form.cleaned_data
+			title = form.cleaned_data['title']
+			address = form.cleaned_data['address']
+			price = form.cleaned_data['price']
+			description = form.cleaned_data['description']
+			num_of_bedrooms = form.cleaned_data['num_of_bedrooms']
+			num_of_bathrooms = form.cleaned_data['num_of_bathrooms']
+			sqft = form.cleaned_data['sqft']
+			lot_size = form.cleaned_data['lot_size']
+			max_occupancy = form.cleaned_data['max_occupancy']
+			availability_start = form.cleaned_data['availability_start']
+			availability_end = form.cleaned_data['availability_end']
+			availability_status = form.cleaned_data['availability_status']
+			post_expiration_date = form.cleaned_data['post_expiration_date']
+			laundry = form.cleaned_data['laundry']
+			parking = form.cleaned_data['parking']
+			pet_friendly = form.cleaned_data['pet_friendly']
+			smoking = form.cleaned_data['smoking']
+			water = form.cleaned_data['water']
+			gas = form.cleaned_data['gas']
+			power = form.cleaned_data['power']
+			wifi = form.cleaned_data['wifi']
+			wheelchair_access = form.cleaned_data['wheelchair_access']
+			furnished = form.cleaned_data['furnished']
+			balcony = form.cleaned_data['balcony']
+			yard = form.cleaned_data['yard']
+			images = form.cleaned_data['images']
+			gym = form.cleaned_data['gym']
+			maintenance = form.cleaned_data['maintenance']
+
+			edit_date = datetime.now()
+
+			# does listing already exist??
+			if Listing.objects.all().filter(id=id).exists():
+				# yes, listing already exists, so update it
+				curr_listing = Listing.objects.all().get(id=id)
+
+				curr_listing.title = title
+				curr_listing.address = address
+				curr_listing.price = price
+				curr_listing.description = description
+				curr_listing.num_of_bathrooms = num_of_bathrooms
+				curr_listing.num_of_bedrooms = num_of_bedrooms
+				curr_listing.sqft = sqft
+				curr_listing.lot_size = lot_size
+				curr_listing.max_occupancy = max_occupancy
+				curr_listing.availability_start = availability_start
+				curr_listing.availability_end = availability_end
+				curr_listing.availability_status = availability_status
+				curr_listing.post_expiration_date = post_expiration_date
+				curr_listing.last_edited_date = edit_date
+				curr_listing.laundry = laundry
+				curr_listing.parking = parking
+				curr_listing.pet_friendly = pet_friendly
+				curr_listing.smoking = smoking
+				curr_listing.water = water
+				curr_listing.gas = gas
+				curr_listing.power = power
+				curr_listing.wifi = wifi
+				curr_listing.wheelchair_access = wheelchair_access
+				curr_listing.furnished = furnished
+				curr_listing.balcony = balcony
+				curr_listing.yard = yard
+				curr_listing.images = images
+				curr_listing.gym = gym
+				curr_listing.maintenance = maintenance
+
+				curr_listing.save()
+
+				response_data = {}
+				response_data['ok'] = 'true'
+				response_data['message'] = 'listing %s successfully updated' % id
+				response_data['info'] = model_to_dict(curr_listing)
+				return JsonResponse(response_data)
+
+			else:
+				# no, listing doesn't already exist
+				response_data = {}
+				response_data['ok'] = 'false'
+				response_data['message'] = 'listing %s does not exist' % id
+				return JsonResponse(response_data)
+
+		else:
+			# the form isn't valid
+			response_data = {}
+			response_data['ok'] = 'false'
+			response_data['message'] = 'form data was invalid'
+			return JsonResponse(response_data)
+
 	else:
-		response_data = {}
-		response_data['ok'] = 'false'
-		response_data['message'] = 'no listing exists with id %s' % id
-		return JsonResponse(response_data)
+		# GET (or other) request
+		form = ListingForm()
+		# does listing exist?
+		if Listing.objects.all().filter(id=id).exists():
+			# yes, listing already exists, so show listing's data
+			curr_listing = Listing.objects.all().get(id=id)
+			response_data = {}
+			response_data['ok'] = 'true'
+			response_data['info'] = model_to_dict(curr_listing)
+			return JsonResponse(response_data)
+
+		else:
+			# no, listing doesn't exist
+			response_data = {}
+			response_data['ok'] = 'false'
+			response_data['message'] = 'no listing exists with the id %s' % id
+			return JsonResponse(response_data)
 
 
 #
