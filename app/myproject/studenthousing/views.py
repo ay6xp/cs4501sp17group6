@@ -59,12 +59,69 @@ def listing_create(request):
 		form = ListingForm(request.POST)
 		if form.is_valid():
 			# process data in form.cleaned_data
-			# ...
+			user = form.cleaned_data['user']
+			title = form.cleaned_data['title']
+			address = form.cleaned_data['address']
+			price = form.cleaned_data['price']
+			description = form.cleaned_data['description']
+			num_of_bedrooms = form.cleaned_data['num_of_bedrooms']
+			num_of_bathrooms = form.cleaned_data['num_of_bathrooms']
+			sqft = form.cleaned_data['sqft']
+			lot_size = form.cleaned_data['lot_size']
+			max_occupancy = form.cleaned_data['max_occupancy']
+			availability_start = form.cleaned_data['availability_start']
+			availability_end = form.cleaned_data['availability_end']
+			availability_status = form.cleaned_data['availability_status']
+			post_expiration_date = form.cleaned_data['post_expiration_date']
+			laundry = form.cleaned_data['laundry']
+			parking = form.cleaned_data['parking']
+			pet_friendly = form.cleaned_data['pet_friendly']
+			smoking = form.cleaned_data['smoking']
+			water = form.cleaned_data['water']
+			gas = form.cleaned_data['gas']
+			power = form.cleaned_data['power']
+			wifi = form.cleaned_data['wifi']
+			wheelchair_access = form.cleaned_data['wheelchair_access']
+			furnished = form.cleaned_data['furnished']
+			balcony = form.cleaned_data['balcony']
+			yard = form.cleaned_data['yard']
+			images = form.cleaned_data['images']
+			gym = form.cleaned_data['gym']
+			maintenance = form.cleaned_data['maintenance']
+
+			post_date = datetime.now()
 
 			new_listing = Listing.objects.create(
-				# put data here
+				user=user, title=title, address=address, price=price, description=description,
+				num_of_bathrooms=num_of_bathrooms, num_of_bedrooms=num_of_bedrooms, sqft=sqft,
+				lot_size=lot_size, max_occupancy=max_occupancy, availability_start=availability_start,
+				availability_end=availability_end, availability_status=availability_status, 
+				post_date=post_date, post_expiration_date=post_expiration_date, laundry=laundry,
+				parking=parking, pet_friendly=pet_friendly, smoking=smoking, water=water, gas=gas,
+				power=power, wifi=wifi, wheelchair_access=wheelchair_access, furnished=furnished,
+				balcony=balcony, yard=yard, images=images, gym=gym, maintenance=maintenance,
+				last_edited_date=post_date
 			)
-			return JsonResponse(model_to_dict(new_listing))
+
+			response_data = {}
+			response_data['ok'] = 'true'
+			response_data['message'] = 'listing %s successfully created' % title
+			response_data['info'] = model_to_dict(new_listing)
+			return JsonResponse(response_data)
+
+		else:
+			# the form isn't valid
+			response_data = {}
+			response_data['ok'] = 'false'
+			response_data['message'] = 'form data was invalid'
+			return JsonResponse(response_data)
+
+	else:
+		# GET (or other) request
+		response_data = {}
+		response_data['ok'] = 'false'
+		response_data['message'] = 'this action only supports POST requests'
+		return JsonResponse(response_data)
 
 #
 #	"read" and "update" functionalities of Listing CRUD
@@ -180,7 +237,7 @@ def user_create(request):
 
 				response_data = {}
 				response_data['ok'] = 'true'
-				response_data['message'] = 'user %s successfully created' % id
+				response_data['message'] = 'user %s successfully created' % username
 				response_data['info'] = model_to_dict(new_user)
 				return JsonResponse(response_data)
 
