@@ -11,5 +11,7 @@ urlpatterns = [
 	url(r'^users/delete/(?P<id>[0-9]+)/$', views.user_delete, name='delete_user'),
 	# Listing CRUD
 	url(r'^listings/$', views.listings, name='listings'),
-	url(r'^listings/(?P<listing_id>[0-9]+)/$', views.listing_detail, name='listing_detail'),
+	url(r'^listings/new/$', views.listing_create, name='new_listing'),
+	url(r'^listings/(?P<id>[0-9]+)/$', views.listing_detail, name='listing_detail'),
+	url(r'^listings/delete/(P<id>[0-9]+)/$', views.listing_delete, name='delete_listing')
 ]

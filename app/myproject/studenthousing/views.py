@@ -51,20 +51,46 @@ def listing_create(request):
 #	"read" and "update" functionalities of Listing CRUD
 #
 @csrf_exempt
-def listing_detail(request, listing_id):
-	curr_listing = Listing.objects.all().filter(id=listing_id)
+def listing_detail(request, id):
+	curr_listing = Listing.objects.all().filter(id=id)
 	if curr_listing.count() == 1:
 		return JsonResponse(list(curr_listing), safe=False)
 	else:
 		response_data = {}
 		response_data['ok'] = 'false'
-		response_data['message'] = 'No listing exists with id %s.' % listing_id
+		response_data['message'] = 'No listing exists with id %s.' % id
 		return JsonResponse(response_data)
 
 
 #
 #	"delete" functionality of Listing CRUD
 #
+@csrf_exempt
+def listing_delete(request, id):
+	if request.method == 'GET':
+		# GET request
+		# does this listing exist?
+		if Listing.objects.all().filter(id=id).exists():
+			# yes, listing exists, so we can delete it
+			curr_listing = Listing.objects.all().get(id=id).delete()
+			response_data = {}
+			response_data['ok'] = 'true'
+			response_data['message'] = 'listing %s successfully deleted' % id
+			return JsonResponse(response_data)
+
+		else:
+			# no, that listing doesn't exist, so we can't delete it
+			response_data = {}
+			response_data['ok'] = 'false'
+			response_data['message'] = 'no listing exists with the id %s' % id
+			return JsonResponse(response_data)
+
+	else:
+	# POST (or other) request
+		response_data = {}
+		response_data['ok'] = 'false'
+		response_data['message'] = 'this action only supports GET requests'
+		return JsonResponse(response_data)
 
 
 #
@@ -228,14 +254,13 @@ def user_detail(request, id):
 def user_delete(request, id):
 	if request.method == 'GET':
 		# GET request
-
 		# does this user exist?
 		if User.objects.all().filter(id=id).exists():
 			# yes, user exists, so we can delete them
 			curr_user = User.objects.all().get(id=id).delete()
 			response_data = {}
 			response_data['ok'] = 'true'
-			response_data['message'] = 'no user %s successfully deleted' % id
+			response_data['message'] = 'user %s successfully deleted' % id
 			return JsonResponse(response_data)
 
 		else:
