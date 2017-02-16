@@ -1,7 +1,7 @@
 [
 	{
 		"model": "studenthousing.User",
-    	"pk": "jane_doe",
+    	"pk": 1,
     	"fields": {
           	"username": "jane_doe",
       		"display_name": "Jane Doe",
