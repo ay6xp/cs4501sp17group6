@@ -24,8 +24,8 @@ def listings(request):
 	listings = Listing.objects.all().values()
 	if listings.count() == 0:
 		response_data = {}
-		response_data['result'] = 'error'
-		response_data['message'] = 'No listings exist at this time.'
+		response_data['ok'] = 'true'
+		response_data['message'] = 'no listings exist at this time'
 		return JsonResponse(response_data)
 	return JsonResponse(list(listings), safe=False)
 
@@ -58,7 +58,7 @@ def listing_detail(request, id):
 	else:
 		response_data = {}
 		response_data['ok'] = 'false'
-		response_data['message'] = 'No listing exists with id %s.' % id
+		response_data['message'] = 'no listing exists with id %s' % id
 		return JsonResponse(response_data)
 
 
@@ -107,7 +107,7 @@ def users(request):
 			# no, there are no users
 			response_data = {}
 			response_data['ok'] = 'true'
-			response_data['info'] = 'No users exist at this time.'
+			response_data['info'] = 'no users exist at this time'
 			return JsonResponse(response_data)
 
 		else:
@@ -161,6 +161,7 @@ def user_create(request):
 
 				response_data = {}
 				response_data['ok'] = 'true'
+				response_data['message'] = 'user %s successfully created' % id
 				response_data['info'] = model_to_dict(new_user)
 				return JsonResponse(response_data)
 
@@ -197,27 +198,42 @@ def user_detail(request, id):
 
 			# does user already exist??
 			if User.objects.all().filter(id=id).exists():
-				# yes, user already exists, so update current user
-				# !!!!!! we'll also need to check here for username uniqueness !!!!!!!!!!
-				# (alternatively, we can add that to the form's clean method)
+				# yes, user already exists, so update them
 				curr_user = User.objects.all().get(id=id)
-				curr_user.username = username
-				curr_user.email = email
-				curr_user.phone_num = phone_num
-				curr_user.password = password
-				curr_user.save()
 
-				response_data = {}
-				response_data['ok'] = 'true'
-				response_data['message'] = 'user \'%s\' successfully updated' % id
-				response_data['info'] = model_to_dict(curr_user)
-				return JsonResponse(response_data)
+				# make sure this requested username isn't already in use by someone else
+				if User.objects.all().filter(username=username).exists():
+					# a user has this name already. we know it's only one because
+					# we already checked during user creation.
+					# it could be the user who's trying to update things though:
+					if User.objects.all().get(username=username) == User.objects.all().get(id=id):
+						# it is the same user! they're updating their username to be the 
+						# same as it already was. no biggie, we can proceed
+						curr_user.username = username
+						curr_user.email = email
+						curr_user.phone_num = phone_num
+						curr_user.password = password
+						curr_user.save()
+
+						response_data = {}
+						response_data['ok'] = 'true'
+						response_data['message'] = 'user %s successfully updated' % id
+						response_data['info'] = model_to_dict(curr_user)
+						return JsonResponse(response_data)
+
+					else:
+						# it's not the same user, which means our user trying to update things
+						# would be stealing the name from another user. can't have that
+						response_data = {}
+						response_data['ok'] = 'false'
+						response_data['message'] = 'a user with username \'%s\' already exists' % username
+						return JsonResponse(response_data)
 
 			else:
 				# no, user doesn't already exist
 				response_data = {}
 				response_data['ok'] = 'false'
-				response_data['message'] = 'user \'%s\' does not exist' % id
+				response_data['message'] = 'user %s does not exist' % id
 				return JsonResponse(response_data)
 
 		else:
