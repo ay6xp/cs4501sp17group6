@@ -16,6 +16,14 @@ class Listing(models.Model):
     # attributes
     title = models.CharField(max_length=200)
     address = models.CharField(max_length=200)
+    TYPE_CHOICES = (
+        ("A", "Apartment"),
+        ("H", "House"),
+        ("R", "Room"),
+        ("S", "Studio"),
+        ("T", "Townhouse")
+    )
+    residence_type = models.CharField(max_length=1, choices=TYPE_CHOICES)
     num_of_bedrooms = models.PositiveSmallIntegerField()
     num_of_bathrooms = models.PositiveSmallIntegerField()
     price = models.PositiveSmallIntegerField()
