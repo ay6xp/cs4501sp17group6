@@ -1,17 +1,16 @@
-Models
+#Models
 
-Users
+##Users
   - username (pk)
   - display name
   - password
   - email address
   - phone number
   - joined date
-
   - has many Listings (author, posted)
   - has many Listings (favorited, watching, saved)
   
-Listings
+##Listings
   - id (pk)
   - title
   - address
@@ -30,12 +29,6 @@ Listings
   - post date
   - post expiration date
   - last edited date
-  
-  - has a User
-  - has a Tag Cluster
-
-  
-Tag Clusters
   - laundry
   - parking
   - pet friendly
@@ -51,5 +44,5 @@ Tag Clusters
   - images
   - gym
   - maintenance
-  
-  - has a Listing (pk)
+  - has a user (author)
+  - has many users (watching, favorited, bookmarked)
