@@ -3,11 +3,11 @@
 		"model": "studenthousing.User",
     	"pk": 1,
     	"fields": {
-          	"username": "jane_doe",
-      		"password": "password",
-      		"email": "jane_doe_01@gmail.com",
-      		"phone_num": "4341234567",
-      		"joined_date": "2017-02-14 08:30"
+        "username": "jane_doe",
+      	"password": "password",
+      	"email": "jane_doe_01@gmail.com",
+      	"phone_num": "4341234567",
+      	"joined_date": "2017-02-14T03:30:00-05:00"
     	}
 	},
 	{
@@ -24,26 +24,27 @@
       		"max_occupancy": "4",
       		"availability_start": "2017-03-11",
       		"availability_end": "2017-07-30",
-      		"availability_status": "Avail",
+      		"availability_status": "AVAIL",
       		"description": "A beautiful townhouse available for sale in Charlottesville, VA!",
-      		"post_date": "2017-03-11 07:15",
-      		"post_expiration_date": "2017-07-30 11:59",
-      		"last_edited_date": "2017-03-14 03:30",
-		"laundry": false,
-	    	"parking": false,
-	    	"pet_friendly": false,
-	    	"smoking": false,
-	    	"water": false,
-	    	"gas": false,
-	    	"power": false,
-	    	"wifi": false,
-	    	"wheelchair_access": false,
-	    	"furnished": false,
-	    	"balcony": false,
-	    	"yard": false,
-	    	"images": false,
-	    	"gym": false,
-	    	"maintenance": false
+      		"post_date": "2017-02-11T03:00:00-05:00",
+      		"post_expiration_date": "2017-07-30T14:00:00-05:00",
+      		"last_edited_date": "2017-02-14T15:00:00-05:00",
+  		    "laundry": false,
+  	    	"parking": false,
+  	    	"pet_friendly": false,
+  	    	"smoking": false,
+  	    	"water": false,
+  	    	"gas": false,
+  	    	"power": false,
+  	    	"wifi": false,
+  	    	"wheelchair_access": false,
+  	    	"furnished": false,
+  	    	"balcony": false,
+  	    	"yard": false,
+  	    	"images": false,
+  	    	"gym": false,
+  	    	"maintenance": false,
+          "user": 1
     	}
 	}
 ]

@@ -1,12 +1,9 @@
 import json
 
-from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
-from django.core.urlresolvers import reverse
+from django.http import JsonResponse
 from .models import User, Listing
 from .forms import UserForm, ListingForm
 from django.forms.models import model_to_dict
-from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime
 
 # Create your views here.
@@ -21,51 +18,127 @@ def index(request):
 #	list all Listings
 #
 def listings(request):
-	listings = Listing.objects.all().values()
-	if listings.count() == 0:
+	# what type of HTTP request was made?
+	if request.method == 'GET':
+		# GET request
+
+		# are there listings to show?
+		listings = Listing.objects.all().values()
+		if listings.count() == 0:
+			# no, there are no listings
+			response_data = {}
+			response_data['ok'] = 'true'
+			response_data['info'] = 'no listings exist at this time'
+			return JsonResponse(response_data)
+
+		else:
+			# yes, there are listings
+			response_data = {}
+			response_data['ok'] = 'true'
+			response_data['info'] = list(listings)
+			return JsonResponse(response_data)
+
+	else:
+		# POST (or other) request
 		response_data = {}
-		response_data['ok'] = 'true'
-		response_data['message'] = 'no listings exist at this time'
+		response_data['ok'] = 'false'
+		response_data['message'] = 'this action only supports GET requests'
 		return JsonResponse(response_data)
-	return JsonResponse(list(listings), safe=False)
 
 #
 #	"create" functionality of Listing CRUD
 #
-@csrf_exempt
 def listing_create(request):
 	if request.method == 'POST':
 		# POST request
 		# create a form instance and populate it with data from the request
 		form = ListingForm(request.POST)
 		if form.is_valid():
-			# process data in form.cleaned_data
-			# ...
 
-			new_listing = Listing.objects.create(
-				# put data here
-			)
-			return JsonResponse(model_to_dict(new_listing))
+			new_listing = form.save()
+
+			response_data = {}
+			response_data['ok'] = 'true'
+			response_data['message'] = 'listing %s successfully created' % id
+			response_data['info'] = model_to_dict(new_listing)
+			return JsonResponse(response_data)
+
+		else:
+			# the form isn't valid
+			response_data = {}
+			response_data['ok'] = 'false'
+			response_data['message'] = 'form data was invalid'
+			return JsonResponse(response_data)
+
+	else:
+		# GET (or other) request
+		response_data = {}
+		response_data['ok'] = 'false'
+		response_data['message'] = 'this action only supports POST requests'
+		return JsonResponse(response_data)
 
 #
 #	"read" and "update" functionalities of Listing CRUD
 #
-@csrf_exempt
 def listing_detail(request, id):
-	curr_listing = Listing.objects.all().filter(id=id)
-	if curr_listing.count() == 1:
-		return JsonResponse(list(curr_listing), safe=False)
+	# what kind of request was it?
+	if request.method == 'POST':
+		# POST request
+		# create a form instance and populate it with data from the request
+		form = ListingForm(request.POST)
+		if form.is_valid():
+
+			# does listing already exist??
+			if Listing.objects.all().filter(id=id).exists():
+				# yes, listing already exists, so update it
+				curr_listing = Listing.objects.all().get(id=id)
+
+				f = ListingForm(request.POST, instance=curr_listing)
+				f.save()
+
+				response_data = {}
+				response_data['ok'] = 'true'
+				response_data['message'] = 'listing %s successfully updated' % id
+				response_data['info'] = model_to_dict(curr_listing)
+				return JsonResponse(response_data)
+
+			else:
+				# no, listing doesn't already exist
+				response_data = {}
+				response_data['ok'] = 'false'
+				response_data['message'] = 'listing %s does not exist' % id
+				return JsonResponse(response_data)
+
+		else:
+			# the form isn't valid
+			response_data = {}
+			response_data['ok'] = 'false'
+			response_data['message'] = 'form data was invalid'
+			return JsonResponse(response_data)
+
 	else:
-		response_data = {}
-		response_data['ok'] = 'false'
-		response_data['message'] = 'no listing exists with id %s' % id
-		return JsonResponse(response_data)
+		# GET (or other) request
+		form = ListingForm()
+		# does listing exist?
+		if Listing.objects.all().filter(id=id).exists():
+			# yes, listing already exists, so show listing's data
+			curr_listing = Listing.objects.all().get(id=id)
+			response_data = {}
+			response_data['ok'] = 'true'
+			response_data['info'] = model_to_dict(curr_listing)
+			return JsonResponse(response_data)
+
+		else:
+			# no, listing doesn't exist
+			response_data = {}
+			response_data['ok'] = 'false'
+			response_data['message'] = 'no listing exists with the id %s' % id
+			return JsonResponse(response_data)
 
 
 #
 #	"delete" functionality of Listing CRUD
 #
-@csrf_exempt
 def listing_delete(request, id):
 	if request.method == 'GET':
 		# GET request
@@ -128,20 +201,14 @@ def users(request):
 #
 #	"create" functionality of User CRUD
 #
-@csrf_exempt
 def user_create(request):
 	if request.method == 'POST':
 		# POST request
 		# create a form instance and populate it with data from the request
 		form = UserForm(request.POST)
 		if form.is_valid():
-			# process data in form.cleaned_data
+			# get username for ease of use
 			username = form.cleaned_data['username']
-			email = form.cleaned_data['email']
-			phone_num = form.cleaned_data['phone_num']
-			password = form.cleaned_data['password']
-
-			time = datetime.now()
 
 			# let's maintain unique usernames
 			if User.objects.all().filter(username=username).count() > 0:
@@ -153,15 +220,11 @@ def user_create(request):
 
 			else:
 				# no one else already has this username, so we can use it
-				new_user = User.objects.create(
-					username=username, email=email,
-					phone_num=phone_num, password=password,
-					joined_date=time
-				)
+				new_user = form.save()
 
 				response_data = {}
 				response_data['ok'] = 'true'
-				response_data['message'] = 'user %s successfully created' % id
+				response_data['message'] = 'user %s successfully created' % username
 				response_data['info'] = model_to_dict(new_user)
 				return JsonResponse(response_data)
 
@@ -182,7 +245,6 @@ def user_create(request):
 #
 #	"read" and "update" functionalities of User CRUD
 #
-@csrf_exempt
 def user_detail(request, id):
 	# what kind of request was it?
 	if request.method == 'POST':
@@ -190,11 +252,8 @@ def user_detail(request, id):
 		# create a form instance and populate it with data from the request
 		form = UserForm(request.POST)
 		if form.is_valid():
-			# process data in form.cleaned_data
+			# get username for ease of use
 			username = form.cleaned_data['username']
-			email = form.cleaned_data['email']
-			phone_num = form.cleaned_data['phone_num']
-			password = form.cleaned_data['password']
 
 			# does user already exist??
 			if User.objects.all().filter(id=id).exists():
@@ -209,11 +268,8 @@ def user_detail(request, id):
 					if User.objects.all().get(username=username) == User.objects.all().get(id=id):
 						# it is the same user! they're updating their username to be the 
 						# same as it already was. no biggie, we can proceed
-						curr_user.username = username
-						curr_user.email = email
-						curr_user.phone_num = phone_num
-						curr_user.password = password
-						curr_user.save()
+						f = UserForm(request.POST, instance=curr_user)
+						f.save()
 
 						response_data = {}
 						response_data['ok'] = 'true'
@@ -266,7 +322,6 @@ def user_detail(request, id):
 #
 #	"delete" functionality of User CRUD
 #
-@csrf_exempt
 def user_delete(request, id):
 	if request.method == 'GET':
 		# GET request
