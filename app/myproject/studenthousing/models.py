@@ -21,9 +21,10 @@ class Listing(models.Model):
         ("H", "House"),
         ("R", "Room"),
         ("S", "Studio"),
-        ("T", "Townhouse")
+        ("T", "Townhouse"),
+        ("O", "Other")
     )
-    residence_type = models.CharField(max_length=1, choices=TYPE_CHOICES)
+    residence_type = models.CharField(max_length=1, choices=TYPE_CHOICES, default="O")
     num_of_bedrooms = models.PositiveSmallIntegerField()
     num_of_bathrooms = models.PositiveSmallIntegerField()
     price = models.PositiveSmallIntegerField()

@@ -6,7 +6,9 @@ class UserForm(forms.ModelForm):
 
 	class Meta:
 		model = User
+		exclude = ['joined_date']
 
 class ListingForm(forms.ModelForm):
 	class Meta:
 		model = Listing
+		exclude = ['post_date']
