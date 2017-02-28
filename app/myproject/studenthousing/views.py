@@ -27,21 +27,21 @@ def listings(request):
 		if listings.count() == 0:
 			# no, there are no listings
 			response_data = {}
-			response_data['ok'] = 'true'
-			response_data['info'] = 'no listings exist at this time'
+			response_data['ok'] = True
+			response_data['message'] = 'no listings exist at this time'
 			return JsonResponse(response_data)
 
 		else:
 			# yes, there are listings
 			response_data = {}
-			response_data['ok'] = 'true'
+			response_data['ok'] = True
 			response_data['info'] = list(listings)
 			return JsonResponse(response_data)
 
 	else:
 		# POST (or other) request
 		response_data = {}
-		response_data['ok'] = 'false'
+		response_data['ok'] = False
 		response_data['message'] = 'this action only supports GET requests'
 		return JsonResponse(response_data)
 
@@ -58,7 +58,7 @@ def listing_create(request):
 			new_listing = form.save()
 
 			response_data = {}
-			response_data['ok'] = 'true'
+			response_data['ok'] = True
 			response_data['message'] = 'listing %s successfully created' % id
 			response_data['info'] = model_to_dict(new_listing)
 			return JsonResponse(response_data)
@@ -66,14 +66,14 @@ def listing_create(request):
 		else:
 			# the form isn't valid
 			response_data = {}
-			response_data['ok'] = 'false'
+			response_data['ok'] = False
 			response_data['message'] = 'form data was invalid'
 			return JsonResponse(response_data)
 
 	else:
 		# GET (or other) request
 		response_data = {}
-		response_data['ok'] = 'false'
+		response_data['ok'] = False
 		response_data['message'] = 'this action only supports POST requests'
 		return JsonResponse(response_data)
 
@@ -97,7 +97,7 @@ def listing_detail(request, id):
 				f.save()
 
 				response_data = {}
-				response_data['ok'] = 'true'
+				response_data['ok'] = True
 				response_data['message'] = 'listing %s successfully updated' % id
 				response_data['info'] = model_to_dict(curr_listing)
 				return JsonResponse(response_data)
@@ -105,14 +105,14 @@ def listing_detail(request, id):
 			else:
 				# no, listing doesn't already exist
 				response_data = {}
-				response_data['ok'] = 'false'
+				response_data['ok'] = False
 				response_data['message'] = 'listing %s does not exist' % id
 				return JsonResponse(response_data)
 
 		else:
 			# the form isn't valid
 			response_data = {}
-			response_data['ok'] = 'false'
+			response_data['ok'] = False
 			response_data['message'] = 'form data was invalid'
 			return JsonResponse(response_data)
 
@@ -124,14 +124,14 @@ def listing_detail(request, id):
 			# yes, listing already exists, so show listing's data
 			curr_listing = Listing.objects.all().get(id=id)
 			response_data = {}
-			response_data['ok'] = 'true'
+			response_data['ok'] = True
 			response_data['info'] = model_to_dict(curr_listing)
 			return JsonResponse(response_data)
 
 		else:
 			# no, listing doesn't exist
 			response_data = {}
-			response_data['ok'] = 'false'
+			response_data['ok'] = False
 			response_data['message'] = 'no listing exists with the id %s' % id
 			return JsonResponse(response_data)
 
@@ -147,21 +147,21 @@ def listing_delete(request, id):
 			# yes, listing exists, so we can delete it
 			curr_listing = Listing.objects.all().get(id=id).delete()
 			response_data = {}
-			response_data['ok'] = 'true'
+			response_data['ok'] = True
 			response_data['message'] = 'listing %s successfully deleted' % id
 			return JsonResponse(response_data)
 
 		else:
 			# no, that listing doesn't exist, so we can't delete it
 			response_data = {}
-			response_data['ok'] = 'false'
+			response_data['ok'] = False
 			response_data['message'] = 'no listing exists with the id %s' % id
 			return JsonResponse(response_data)
 
 	else:
 	# POST (or other) request
 		response_data = {}
-		response_data['ok'] = 'false'
+		response_data['ok'] = False
 		response_data['message'] = 'this action only supports GET requests'
 		return JsonResponse(response_data)
 
@@ -179,21 +179,21 @@ def users(request):
 		if users.count() == 0:
 			# no, there are no users
 			response_data = {}
-			response_data['ok'] = 'true'
-			response_data['info'] = 'no users exist at this time'
+			response_data['ok'] = True
+			response_data['message'] = 'no users exist at this time'
 			return JsonResponse(response_data)
 
 		else:
 			# yes, there are users
 			response_data = {}
-			response_data['ok'] = 'true'
+			response_data['ok'] = True
 			response_data['info'] = list(users)
 			return JsonResponse(response_data)
 
 	else:
 		# POST (or other) request
 		response_data = {}
-		response_data['ok'] = 'false'
+		response_data['ok'] = False
 		response_data['message'] = 'this action only supports GET requests'
 		return JsonResponse(response_data)
 
@@ -214,7 +214,7 @@ def user_create(request):
 			if User.objects.all().filter(username=username).count() > 0:
 				# some existing user already has this username
 				response_data = {}
-				response_data['ok'] = 'false'
+				response_data['ok'] = False
 				response_data['message'] = 'username \'%s\' is already in use' % username
 				return JsonResponse(response_data)
 
@@ -223,7 +223,7 @@ def user_create(request):
 				new_user = form.save()
 
 				response_data = {}
-				response_data['ok'] = 'true'
+				response_data['ok'] = True
 				response_data['message'] = 'user %s successfully created' % username
 				response_data['info'] = model_to_dict(new_user)
 				return JsonResponse(response_data)
@@ -231,14 +231,14 @@ def user_create(request):
 		else:
 			# the form isn't valid
 			response_data = {}
-			response_data['ok'] = 'false'
+			response_data['ok'] = False
 			response_data['message'] = 'form data was invalid'
 			return JsonResponse(response_data)
 
 	else:
 		# GET (or other) request
 		response_data = {}
-		response_data['ok'] = 'false'
+		response_data['ok'] = False
 		response_data['message'] = 'this action only supports POST requests'
 		return JsonResponse(response_data)
 
@@ -272,7 +272,7 @@ def user_detail(request, id):
 						f.save()
 
 						response_data = {}
-						response_data['ok'] = 'true'
+						response_data['ok'] = True
 						response_data['message'] = 'user %s successfully updated' % id
 						response_data['info'] = model_to_dict(curr_user)
 						return JsonResponse(response_data)
@@ -281,21 +281,21 @@ def user_detail(request, id):
 						# it's not the same user, which means our user trying to update things
 						# would be stealing the name from another user. can't have that
 						response_data = {}
-						response_data['ok'] = 'false'
+						response_data['ok'] = False
 						response_data['message'] = 'a user with username \'%s\' already exists' % username
 						return JsonResponse(response_data)
 
 			else:
 				# no, user doesn't already exist
 				response_data = {}
-				response_data['ok'] = 'false'
+				response_data['ok'] = False
 				response_data['message'] = 'user %s does not exist' % id
 				return JsonResponse(response_data)
 
 		else:
 			# the form isn't valid
 			response_data = {}
-			response_data['ok'] = 'false'
+			response_data['ok'] = False
 			response_data['message'] = 'form data was invalid'
 			return JsonResponse(response_data)
 
@@ -307,14 +307,14 @@ def user_detail(request, id):
 			# yes, user already exists, so show user's data
 			curr_user = User.objects.all().get(id=id)
 			response_data = {}
-			response_data['ok'] = 'true'
+			response_data['ok'] = True
 			response_data['info'] = model_to_dict(curr_user)
 			return JsonResponse(response_data)
 
 		else:
 			# no, user doesn't exist
 			response_data = {}
-			response_data['ok'] = 'false'
+			response_data['ok'] = False
 			response_data['message'] = 'no user exists with the id %s' % id
 			return JsonResponse(response_data)
 
@@ -330,20 +330,20 @@ def user_delete(request, id):
 			# yes, user exists, so we can delete them
 			curr_user = User.objects.all().get(id=id).delete()
 			response_data = {}
-			response_data['ok'] = 'true'
+			response_data['ok'] = True
 			response_data['message'] = 'user %s successfully deleted' % id
 			return JsonResponse(response_data)
 
 		else:
 			# no, that user doesn't exist, so we can't delete them
 			response_data = {}
-			response_data['ok'] = 'false'
+			response_data['ok'] = False
 			response_data['message'] = 'no user exists with the id %s' % id
 			return JsonResponse(response_data)
 
 	else:
 	# POST (or other) request
 		response_data = {}
-		response_data['ok'] = 'false'
+		response_data['ok'] = False
 		response_data['message'] = 'this action only supports GET requests'
 		return JsonResponse(response_data)
