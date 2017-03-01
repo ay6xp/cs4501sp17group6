@@ -1,21 +1,25 @@
 from django.test import TestCase
 from django.core.urlresolvers import reverse
 from .models import Listing, User
+import json
 
 class ListingTests(TestCase):
 
-	def show_all_listings(self):
-		fixtures = ['db_init.json']
-		response = self.client.get(reverse('listings'))
+	fixtures = ['db_init.json']
+
+	def test_show_all_listings(self):
+		response = self.client.get(reverse('listings')).json()
+		print(response)
 		self.assertEqual(response['ok'], True)
 
-	def show_one_listing(self):
-		fixtures = ['db_init.json']
-		response = self.client.get(reverse('listing_detail', kwargs={'id':1}))
+	def test_show_one_listing(self):
+		response = self.client.get(reverse('listing_detail', args=[1]))
+		print(response)
 		self.assertContains(response, 'info')
 
-	def show_nonexistent_listing(self):
+	def test_show_nonexistent_listing(self):
 		response = self.client.get(reverse('listing_detail', kwargs={'id':999}))
+		print(response)
 		self.assertContains(response, 'no listing exists')
 
 	def create_listing(self):

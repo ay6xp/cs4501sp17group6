@@ -1,48 +1,72 @@
 import json
-import requests
+import urllib.request
+import urllib.parse
 from django.http import JsonResponse
 
 #
 #	helper function for url construction
 #
 def _url(path):
-	return 'http://models-api:8000/api/v1/' + path
+	return 'http://models-api:8000/studenthousing/api/v1/' + path
 
 #
 #	Listings
 #
 def get_all_listings(request):
-	# step one: make get request
-	# step two: get JSON object from response
-	r = requests.get(_url('listings/')).json()
-	# if no errors, return the data
-	if r['ok']:
-		return JsonResponse({'info': r['info']})
-	# if errors, return the error message
-	else:
-		return JsonResponse({'message': r['message']})
+	req = urllib.request.Request(_url('listings/'))
+	resp_json = urllib.request.urlopen(req).read().decode('utf-8')
+	res = json.loads(resp_json)
 
-def get_listing(request, listing_id):
-	r = requests.get(_url('listings/') + str(listing_id) + '/').json()
-	if r['ok']:
-		return JsonResponse({'info': r['info']})
+	if res['ok']:
+		return JsonResponse({'info': res['info']})
 	else:
-		return JsonResponse({'message': r['message']})
+		return JsonResponse({'message': res['message']})
+
+def get_listing(request, id):
+	req = urllib.request.Request(_url('listings/') + str(id) + '/')
+	resp_json = urllib.request.urlopen(req).read().decode('utf-8')
+	res = json.loads(resp_json)
+
+	if res['ok']:
+		return JsonResponse({'info': res['info']})
+	else:
+		return JsonResponse({'message': res['message']})
+
+def get_expiring_soon_listings(request):
+	req = urllib.request.Request(_url('listings/expiring_soon/'))
+	resp_json = urllib.request.urlopen(req).read().decode('utf-8')
+	res = json.loads(resp_json)
+	pass
 
 
 #
 #	Users
 #
 def get_all_users(request):
-	r = requests.get(_url('users/')).json()
-	if r['ok']:
-		return JsonResponse({'info': r['info']})
-	else:
-		return JsonResponse({'message': r['message']})
+	req = urllib.request.Request(_url('users/'))
+	resp_json = urllib.request.urlopen(req).read().decode('utf-8')
+	res = json.loads(resp_json)
 
-def get_user(request, user_id):
-	r = requests.get(_url('users/') + str(user_id) + '/').json()
-	if r['ok']:
-		return JsonResponse({'info': r['info']})
+	if res['ok']:
+		return JsonResponse({'info': res['info']})
 	else:
-		return JsonResponse({'message': r['message']})
+		return JsonResponse({'message': res['message']})
+
+def get_user(request, id):
+	req = urllib.request.Request(_url('users/') + str(id) + '/')
+	resp_json = urllib.request.urlopen(req).read().decode('utf-8')
+	res = json.loads(resp_json)
+
+	if res['ok']:
+		return JsonResponse({'info': res['info']})
+	else:
+		return JsonResponse({'message': res['message']})
+
+def create_user(request):
+	pass
+
+def get_active_users(request):
+	pass
+
+def get_recently_joined_users(request):
+	pass

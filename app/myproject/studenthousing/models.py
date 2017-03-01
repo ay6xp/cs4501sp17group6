@@ -6,7 +6,7 @@ class User(models.Model):
     password = models.CharField(max_length=50)
     email = models.EmailField(max_length=50)
     phone_num = models.CharField(max_length=10)
-    joined_date = models.DateTimeField(auto_now_add=True)
+    joined_date = models.DateField(auto_now_add=True)
 
     def __str__(self):
         return self.username
@@ -43,11 +43,11 @@ class Listing(models.Model):
         ("SOLD", "Sold")
     )
     availability_status = models.CharField(max_length=5, choices=AVAILABILITY_CHOICES, default="AVAIL")
-    #images = models.ImageField() // will add later, not important for now
+    #photos = models.ImageField() // will add later, not important for now
     description = models.TextField()
-    post_date = models.DateTimeField(auto_now_add=True)
-    post_expiration_date = models.DateTimeField()
-    last_edited_date = models.DateTimeField(auto_now=True)
+    post_date = models.DateField(auto_now_add=True)
+    post_expiration_date = models.DateField()
+    last_edited_date = models.DateField(auto_now=True)
 
     laundry = models.BooleanField(default=False)
     parking = models.BooleanField(default=False)
