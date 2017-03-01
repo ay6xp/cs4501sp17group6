@@ -53,7 +53,6 @@ class ListingTestPopulated(TestCase):
 		response = self.client.post(reverse('new_listing'), data)
 		self.assertContains(response, 'successfully created')
 		
-
 	def test_update_listing(self):
 		data = {
 			"title": "Townhouse Available in Friendly Neighborhood",
@@ -102,26 +101,46 @@ class ListingTestEmpty(TestCase):
 		response = self.client.get(reverse('listing_detail', kwargs={'id':999}))
 		self.assertContains(response, 'no listing exists')
 
-class UserTestPopulated(TestCase):
+class UserTests(TestCase):
 
 	fixtures = ['db_init.json']
 
 	def test_show_all_users(self):
-		pass
+		response = self.client.get(reverse('users')).json()
+		self.assertEqual(response['ok'], True)
 
 	def test_show_one_user(self):
-		pass
+		response = self.client.get(reverse('user_detail', args=[1]))
+		self.assertContains(response, 'info')
 
 	def test_create_user(self):
-		pass
+		data = {
+			"username": "john_doe1",
+		    "password": "testing",
+		    "email": "john_doe@gmail.com",
+		    "phone_num": "2904580987",
+		    "joined_date": "2017-02-28"
+		}
+		response = self.client.post(reverse('new_user'), data)
+		self.assertContains(response, 'successfully created')
 
 	def test_update_user(self):
-		pass
+		data = {
+			"username": "jane_doe",
+		    "password": "password",
+		    "email": "jane_doe@gmail.com",
+		    "phone_num": "8047834123",
+		    "joined_date": "2017-02-28"
+		}
+		response = self.client.post(reverse('user_detail', args=[1]), data)
+		self.assertContains(response, 'successfully updated')
 
 	def test_delete_user(self):
 		pass
 
+#to test with empty database
 class UserTestEmpty(TestCase):
 
 	def test_show_nonexistent_user(self):
-		pass
+		response = self.client.get(reverse('user_detail', kwargs={'id':757}))
+		self.assertContains(response, 'no user exists')
