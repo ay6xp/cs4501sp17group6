@@ -136,7 +136,8 @@ class UserTests(TestCase):
 		self.assertContains(response, 'successfully updated')
 
 	def test_delete_user(self):
-		pass
+		response = self.client.get(reverse('delete_user', args=[1]))
+		self.assertContains(response, 'successfully deleted')
 
 #to test with empty database
 class UserTestEmpty(TestCase):
