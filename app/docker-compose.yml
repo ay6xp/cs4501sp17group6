@@ -16,7 +16,7 @@ exp:
     - ./exp:/app
   ports:
     - "8002:8000"
-  command: "mod_wsgi-express start-server --reload-on-changes --log-to-terminal ./exp/wsgi.py"
+  command: bash -c "pip install requests && mod_wsgi-express start-server --reload-on-changes --log-to-terminal ./exp/wsgi.py"
 
 web:
   image: tp33/django

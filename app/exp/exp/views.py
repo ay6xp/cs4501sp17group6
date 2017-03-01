@@ -1,6 +1,7 @@
 import json
-import urllib.request
-import urllib.parse
+import requests
+# import urllib.request
+# import urllib.parse
 from django.http import JsonResponse
 from datetime import datetime, timedelta
 
@@ -14,9 +15,7 @@ def _url(path):
 #	Listings
 #
 def get_all_listings(request):
-	req = urllib.request.Request(_url('listings/'))
-	resp_json = urllib.request.urlopen(req).read().decode('utf-8')
-	res = json.loads(resp_json)
+	res = requests.get(_url('listings/')).json()
 
 	if res['ok']:
 		return JsonResponse({'info': res['info']})
@@ -24,9 +23,7 @@ def get_all_listings(request):
 		return JsonResponse({'message': res['message']})
 
 def get_listing(request, id):
-	req = urllib.request.Request(_url('listings/') + str(id) + '/')
-	resp_json = urllib.request.urlopen(req).read().decode('utf-8')
-	res = json.loads(resp_json)
+	res = requests.get(_url('listings/') + str(id) + '/').json()
 
 	if res['ok']:
 		return JsonResponse({'info': res['info']})
@@ -34,9 +31,7 @@ def get_listing(request, id):
 		return JsonResponse({'message': res['message']})
 
 def get_expiring_soon_listings(request):
-	req = urllib.request.Request(_url('listings/'))
-	resp_json = urllib.request.urlopen(req).read().decode('utf-8')
-	res = json.loads(resp_json)
+	res = requests.get(_url('listings/')).json()
 
 	if res['ok']:
 
@@ -67,9 +62,7 @@ def get_expiring_soon_listings(request):
 		return JsonResponse({'message': res['message']})
 
 def get_recently_posted_listings(request):
-	req = urllib.request.Request(_url('listings/'))
-	resp_json = urllib.request.urlopen(req).read().decode('utf-8')
-	res = json.loads(resp_json)
+	res = requests.get(_url('listings/')).json()
 
 	if res['ok']:
 
@@ -104,9 +97,7 @@ def get_recently_posted_listings(request):
 #	Users
 #
 def get_all_users(request):
-	req = urllib.request.Request(_url('users/'))
-	resp_json = urllib.request.urlopen(req).read().decode('utf-8')
-	res = json.loads(resp_json)
+	res = requests.get(_url('users/')).json()
 
 	if res['ok']:
 		return JsonResponse({'info': res['info']})
@@ -114,25 +105,15 @@ def get_all_users(request):
 		return JsonResponse({'message': res['message']})
 
 def get_user(request, id):
-	req = urllib.request.Request(_url('users/') + str(id) + '/')
-	resp_json = urllib.request.urlopen(req).read().decode('utf-8')
-	res = json.loads(resp_json)
+	res = requests.get(_url('users/') + str(id) + '/').json()
 
 	if res['ok']:
 		return JsonResponse({'info': res['info']})
 	else:
 		return JsonResponse({'message': res['message']})
 
-def create_user(request):
-	pass
-
-def get_active_users(request):
-	pass
-
 def get_recently_joined_users(request):
-	req = urllib.request.Request(_url('users/'))
-	resp_json = urllib.request.urlopen(req).read().decode('utf-8')
-	res = json.loads(resp_json)
+	res = requests.get(_url('users/')).json()
 
 	if res['ok']:
 
