@@ -89,11 +89,11 @@ class ListingTestPopulated(TestCase):
           	"user": 1
 		}
 		response = self.client.post(reverse('listing_detail', args=[1]), data)
-		print(response.json())
 		self.assertContains(response, 'successfully updated')
 
 	def test_delete_listing(self):
-		pass
+		response = self.client.get(reverse('delete_listing', kwargs={'id':1}))
+		self.assertContains(response, 'successfully deleted')
 
 class ListingTestEmpty(TestCase):
 
