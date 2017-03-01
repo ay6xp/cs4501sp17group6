@@ -22,31 +22,31 @@ class ListingTests(TestCase):
 		print(response)
 		self.assertContains(response, 'no listing exists')
 
-	def create_listing(self):
+	def test_create_listing(self):
 		pass
 
-	def update_listing(self):
+	def test_update_listing(self):
 		pass
 
-	def delete_listing(self):
+	def test_delete_listing(self):
 		pass
 
 class UserTests(TestCase):
 
-	def show_all_users(self):
+	def test_show_all_users(self):
 		pass
 
-	def show_one_user(self):
+	def test_show_one_user(self):
 		pass
 
-	def show_nonexistent_user(self):
+	def test_show_nonexistent_user(self):
 		pass
 
-	def create_user(self):
+	def test_create_user(self):
 		pass
 
-	def update_user(self):
+	def test_update_user(self):
 		pass
 
-	def delete_user(self):
+	def test_delete_user(self):
 		pass
