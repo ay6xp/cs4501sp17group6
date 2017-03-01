@@ -67,7 +67,7 @@ class Listing(models.Model):
 
     # relationships
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="author")
-    watching_user = models.ManyToManyField(User, related_name="watcher")
+    watching_user = models.ManyToManyField(User, related_name="watcher", blank=True)
 
     def __str__(self):
         return "Title: {0}, Address: {1}".format(self.title, self.address)

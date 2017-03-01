@@ -57,18 +57,19 @@ def listing_create(request):
 		if form.is_valid():
 
 			new_listing = form.save()
+			data = serializers.serialize('json', [new_listing])
 
 			response_data = {}
 			response_data['ok'] = True
 			response_data['message'] = 'listing %s successfully created' % id
-			response_data['info'] = model_to_dict(new_listing)
+			response_data['info'] = data
 			return JsonResponse(response_data)
 
 		else:
 			# the form isn't valid
 			response_data = {}
 			response_data['ok'] = False
-			response_data['message'] = 'form data was invalid'
+			response_data['message'] = 'form data was invalid: %s' % form.errors
 			return JsonResponse(response_data)
 
 	else:
