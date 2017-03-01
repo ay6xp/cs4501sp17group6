@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 from .models import Listing, User
 import json
 
-class ListingTests(TestCase):
+class ListingTestsPopulated(TestCase):
 
 	fixtures = ['db_init.json']
 
@@ -14,13 +14,8 @@ class ListingTests(TestCase):
 
 	def test_show_one_listing(self):
 		response = self.client.get(reverse('listing_detail', args=[1]))
-		print(response)
+		print(response.json())
 		self.assertContains(response, 'info')
-
-	def test_show_nonexistent_listing(self):
-		response = self.client.get(reverse('listing_detail', kwargs={'id':999}))
-		print(response)
-		self.assertContains(response, 'no listing exists')
 
 	def test_create_listing(self):
 		pass
@@ -31,15 +26,21 @@ class ListingTests(TestCase):
 	def test_delete_listing(self):
 		pass
 
-class UserTests(TestCase):
+class ListingTestsEmpty(TestCase):
+
+	def test_show_nonexistent_listing(self):
+		response = self.client.get(reverse('listing_detail', kwargs={'id':999}))
+		print(response.json())
+		self.assertContains(response, 'no listing exists')
+
+class UserTestsPopulated(TestCase):
+
+	fixtures = ['db_init.json']
 
 	def test_show_all_users(self):
 		pass
 
 	def test_show_one_user(self):
-		pass
-
-	def test_show_nonexistent_user(self):
 		pass
 
 	def test_create_user(self):
@@ -49,4 +50,9 @@ class UserTests(TestCase):
 		pass
 
 	def test_delete_user(self):
+		pass
+
+class UserTestsEmpty(TestCase):
+
+	def test_show_nonexistent_user(self):
 		pass
