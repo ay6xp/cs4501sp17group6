@@ -142,4 +142,5 @@ class UserTests(TestCase):
 class UserTestEmpty(TestCase):
 
 	def test_show_nonexistent_user(self):
-		pass
+		response = self.client.get(reverse('user_detail', kwargs={'id':757}))
+		self.assertContains(response, 'no user exists')
