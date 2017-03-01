@@ -2,6 +2,7 @@ import json
 import urllib.request
 import urllib.parse
 from django.http import JsonResponse
+from datetime import datetime, timedelta
 
 #
 #	helper function for url construction
@@ -33,10 +34,37 @@ def get_listing(request, id):
 		return JsonResponse({'message': res['message']})
 
 def get_expiring_soon_listings(request):
-	req = urllib.request.Request(_url('listings/expiring_soon/'))
+	req = urllib.request.Request(_url('listings/'))
 	resp_json = urllib.request.urlopen(req).read().decode('utf-8')
 	res = json.loads(resp_json)
-	pass
+
+	if res['ok']:
+
+		exp_soon_list = []
+
+		# check to see if each post's expiration date is within 3 days of now
+		for i in range(len(res['info'])):
+			# get string representation of post's date
+			post_expy_str = res['info'][i]['post_expiration_date']
+			# convert into date object
+			post_expy_date = datetime.strptime(post_expy_str, '%Y-%m-%d').date()
+			
+			# check dates
+			if post_expy_date <= datetime.now().date() + timedelta(days=3):
+				# this is one we should return in this view
+				exp_soon_list.append(res['info'][i])
+			else:
+				# this is not one we should return in this view
+				pass
+
+		# is list empty?
+		if len(exp_soon_list) == 0:
+			return JsonResponse({'message': 'no listings expire within 3 days'})
+
+		return JsonResponse({'info': exp_soon_list})
+
+	else:
+		return JsonResponse({'message': res['message']})
 
 
 #

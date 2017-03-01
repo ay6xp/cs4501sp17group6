@@ -124,8 +124,8 @@ def listing_detail(request, id):
 		# does listing exist?
 		if Listing.objects.all().filter(id=id).exists():
 			# yes, listing already exists, so show listing's data
-			l = Listing.objects.all().filter(id=id)
-			data = serializers.serialize('json', l)
+			l = Listing.objects.all().get(id=id)
+			data = serializers.serialize('json', [l])
 			response_data = {}
 			response_data['ok'] = True
 			response_data['info'] = data
