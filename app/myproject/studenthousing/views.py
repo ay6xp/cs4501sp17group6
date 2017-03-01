@@ -93,8 +93,8 @@ def listing_detail(request, id):
 			# does listing already exist??
 			if Listing.objects.all().filter(id=id).exists():
 				# yes, listing already exists, so update it
-				l = Listing.objects.all().filter(id=id)
-				data = serializers.serialize('json', l)
+				l = Listing.objects.all().get(id=id)
+				data = serializers.serialize('json', [l])
 
 				f = ListingForm(request.POST, instance=l)
 				f.save()
@@ -116,7 +116,7 @@ def listing_detail(request, id):
 			# the form isn't valid
 			response_data = {}
 			response_data['ok'] = False
-			response_data['message'] = 'form data was invalid'
+			response_data['message'] = form.errors
 			return JsonResponse(response_data)
 
 	else:

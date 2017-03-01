@@ -48,15 +48,50 @@ class ListingTestPopulated(TestCase):
 			'images': True,
 			'gym': True,
 			'maintenance': True,
-			'user': 1,
-			# 'watching_user': []
+			'user': 1
 		}
 		response = self.client.post(reverse('new_listing'), data)
 		self.assertContains(response, 'successfully created')
 		
 
 	def test_update_listing(self):
-		pass
+		data = {
+			"title": "Townhouse Available in Friendly Neighborhood",
+      		"address": "123 Memory Lane Charlottesville, VA 22904",
+      		"residence_type": "T",
+      		"num_of_bedrooms": "4",
+      		"num_of_bathrooms": "2",
+      		"price": "1000",
+      		"sqft": "1765",
+      		"lot_size": "S",
+      		"max_occupancy": "4",
+      		"availability_start": "2017-03-11",
+      		"availability_end": "2017-07-30",
+      		"availability_status": "AVAIL",
+      		"description": "A beautiful townhouse available for sale in Charlottesville, VA!",
+      		"post_date": "2017-02-11",
+      		"post_expiration_date": "2017-07-30",
+      		"last_edited_date": "2017-02-14",
+  		    "laundry": False,
+  	    	"parking": False,
+  	    	"pet_friendly": False,
+  	    	"smoking": False,
+  	    	"water": False,
+  	    	"gas": False,
+  	    	"power": False,
+  	    	"wifi": False,
+  	    	"wheelchair_access": False,
+  	    	"furnished": False,
+  	    	"balcony": False,
+  	    	"yard": False,
+  	    	"images": False,
+  	    	"gym": False,
+  	    	"maintenance": False,
+          	"user": 1
+		}
+		response = self.client.post(reverse('listing_detail', args=[1]), data)
+		print(response.json())
+		self.assertContains(response, 'successfully updated')
 
 	def test_delete_listing(self):
 		pass
