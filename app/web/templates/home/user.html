@@ -5,15 +5,13 @@
 {% endblock %}
 
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>user</title>
-</head>
-<body>
+<div class="jumbotron">
+      <h1 style="text-align: center">Welcome to Student Housing!</h1>
+  </div>
 
-     <h1>users: </h1>
+  <div class="content container">
+    <div class="row">
+     <h1>Users: </h1>
        {% if all_users %}
        <ul>
          {% for user in all_users %}
@@ -23,6 +21,6 @@
        {% else %}
          <h3>No current users.</h3>
        {% endif %}
-</body>
-</html>
+    </div>
+  </div>
 {% endblock %}
