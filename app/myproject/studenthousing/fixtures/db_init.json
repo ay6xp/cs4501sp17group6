@@ -11,6 +11,28 @@
     	}
 	},
 	{
+		"model": "studenthousing.User",
+    	"pk": 2,
+    	"fields": {
+        "username": "MaggieNegmIsAwesome",
+      	"password": "password",
+      	"email": "maggieN@gmail.com",
+      	"phone_num": "4343334444",
+      	"joined_date": "2017-02-02"
+    	}
+	},
+	{
+		"model": "studenthousing.User",
+    	"pk": 3,
+    	"fields": {
+        "username": "KirstenWhiteIsSoCool",
+      	"password": "password",
+      	"email": "KWhite@gmail.com",
+      	"phone_num": "4345556666",
+      	"joined_date": "2017-02-17"
+    	}
+	},
+	{
 		"model": "studenthousing.Listing",
     	"pk": 1,
     	"fields": {
