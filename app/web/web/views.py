@@ -38,6 +38,6 @@ def listing_detail(request, id):
     # print(type(data)) # type is list
     data = json.loads(req['info'])
     print(type(data[0])) # type is dict!!!!!
-    print(type(data[0]['fields']))
+    print(data[0]['fields'])
 
     return render(request, 'home/listing.html', {'listing': data[0]['fields']})

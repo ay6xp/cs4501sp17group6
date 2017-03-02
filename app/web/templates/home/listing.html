@@ -5,8 +5,9 @@
   </head>
   <body>
 
-    <h1>Listing {{ listing.id }}</h1>
-    <h2>{{ listing.title }}</h2>
+    <h1>Listing: {{ listing.title }}</h1>
+{#    <h2>{{ listing.title }}</h2>#}
+    <h2>Description: {{ listing.description }}</h2>
       <ul>
           <li>Address: {{ listing.address }}</li>
           <li>Residence Type: {{ listing.residence_type }}</li>
@@ -14,6 +15,9 @@
           <li>Bathrooms: {{ listing.num_of_bathrooms }}</li>
           <li>Price: {{ listing.price }}</li>
           <li>Square footage: {{ listing.sqft }}</li>
+          <li>Max Occupancy: {{ listing.max_occupancy }}</li>
+          <li>Availability dates: {{ listing.availability_start }} to {{ listing.availability_end }}</li>
+
       </ul>
 
 
