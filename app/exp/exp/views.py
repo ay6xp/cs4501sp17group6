@@ -108,9 +108,9 @@ def get_user(request, id):
 	res = requests.get(_url('users/') + str(id) + '/').json()
 
 	if res['ok']:
-		return JsonResponse({'info': res['info']})
+		return JsonResponse({'info': res['info'], 'ok': True})
 	else:
-		return JsonResponse({'message': res['message']})
+		return JsonResponse({'message': res['message'], 'ok': False})
 
 def get_recently_joined_users(request):
 	res = requests.get(_url('users/')).json()
