@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %} 
+  Available Listings 
+{% endblock %}
+
+{% block content %}
+  <div>
+    <h1>{{ listing.title }}</h1>
+    <h2>Description: {{ listing.description }}</h2>
+      <ul>
+          <li>Address: {{ listing.address }}</li>
+          <li>Residence Type: {{ listing.residence_type }}</li>
+          <li>Bedrooms: {{ listing.num_of_bedrooms }}</li>
+          <li>Bathrooms: {{ listing.num_of_bathrooms }}</li>
+          <li>Price: {{ listing.price }}</li>
+          <li>Square footage: {{ listing.sqft }}</li>
+          <li>Max Occupancy: {{ listing.max_occupancy }}</li>
+          <li>Availability dates: {{ listing.availability_start }} to {{ listing.availability_end }}</li>
+      </ul>
+  </div>
+{% endblock %}
