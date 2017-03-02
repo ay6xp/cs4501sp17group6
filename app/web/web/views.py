@@ -26,3 +26,11 @@ def index(request):
     # template = loader.get_template('home/index.html')
     # context = {'all_listings': all_listings}
     # return HttpResponse(template.render(context, request))
+
+
+def listing_detail(request, id):
+    req = requests.get(_url('listings/') + str(id) + '/').json()
+    listing = req['info']
+   # print(req['info'])
+
+    return render(request, 'home/listing.html', {'listing': listing})
