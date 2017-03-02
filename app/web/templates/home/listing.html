@@ -1,12 +1,13 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8">
-  </head>
-  <body>
+{% extends 'base.html' %}
 
+{% block title %} 
+  Available Listings 
+{% endblock %}
+
+{% block content %}
+  <div>
     <h1>Listing: {{ listing.title }}</h1>
-{#    <h2>{{ listing.title }}</h2>#}
+    {#<h2>{{ listing.title }}</h2>#}
     <h2>Description: {{ listing.description }}</h2>
       <ul>
           <li>Address: {{ listing.address }}</li>
@@ -17,9 +18,6 @@
           <li>Square footage: {{ listing.sqft }}</li>
           <li>Max Occupancy: {{ listing.max_occupancy }}</li>
           <li>Availability dates: {{ listing.availability_start }} to {{ listing.availability_end }}</li>
-
       </ul>
-
-
-  </body>
-</html>
+  </div>
+{% endblock %}
