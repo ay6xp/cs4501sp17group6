@@ -312,10 +312,12 @@ def user_detail(request, id):
 		# does user exist?
 		if User.objects.all().filter(id=id).exists():
 			# yes, user already exists, so show user's data
-			curr_user = User.objects.all().get(id=id)
+			u = User.objects.all().get(id=id)
+			data = serializers.serialize('json', [u])
+			data_as_list = json.loads(data)
 			response_data = {}
 			response_data['ok'] = True
-			response_data['info'] = model_to_dict(curr_user)
+			response_data['info'] = data_as_list[0]
 			return JsonResponse(response_data)
 
 		else:
