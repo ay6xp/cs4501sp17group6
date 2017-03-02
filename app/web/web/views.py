@@ -4,6 +4,7 @@ import requests
 import urllib.request
 import urllib.parse
 import json
+from json import JSONEncoder
 from django.template import loader
 from django.http import HttpResponse
 
@@ -26,3 +27,17 @@ def index(request):
     # template = loader.get_template('home/index.html')
     # context = {'all_listings': all_listings}
     # return HttpResponse(template.render(context, request))
+
+
+def listing_detail(request, id):
+    req = requests.get(_url('listings/') + str(id) + '/').json()
+    new_req = json.dumps(req)
+    listing = req['info']
+    # print(type(req)) # type is dict
+    # print(type(req['info'])) # type is str
+    # print(type(data)) # type is list
+    data = json.loads(req['info'])
+    print(type(data[0])) # type is dict!!!!!
+    print(type(data[0]['fields']))
+
+    return render(request, 'home/listing.html', {'listing': data[0]['fields']})
