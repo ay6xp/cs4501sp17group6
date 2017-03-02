@@ -16,9 +16,8 @@ def index(request):
     req = requests.get('http://exp-api:8000/api/v1/listings/').json()
     all_listings = req['info']
     print(req['info'])
-    #raise(Exception(req))
 
-    return render(request, 'index.html', {'all_listings': all_listings})
+    return render(request, 'home/index.html', {'all_listings': all_listings})
 
     # req = urllib.request.Request(_url('listings/'))
     # resp_json = urllib.request.urlopen(req).read().decode('utf-8')
