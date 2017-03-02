@@ -58,11 +58,12 @@ def listing_create(request):
 
 			new_listing = form.save()
 			data = serializers.serialize('json', [new_listing])
+			data_as_list = json.loads(data)
 
 			response_data = {}
 			response_data['ok'] = True
 			response_data['message'] = 'listing %s successfully created' % id
-			response_data['info'] = data
+			response_data['info'] = data_as_list[0]
 			return JsonResponse(response_data)
 
 		else:
@@ -95,6 +96,7 @@ def listing_detail(request, id):
 				# yes, listing already exists, so update it
 				l = Listing.objects.all().get(id=id)
 				data = serializers.serialize('json', [l])
+				data_as_list = json.loads(data)
 
 				f = ListingForm(request.POST, instance=l)
 				f.save()
@@ -102,7 +104,7 @@ def listing_detail(request, id):
 				response_data = {}
 				response_data['ok'] = True
 				response_data['message'] = 'listing %s successfully updated' % id
-				response_data['info'] = data
+				response_data['info'] = data_as_list[0]
 				return JsonResponse(response_data)
 
 			else:
@@ -127,9 +129,10 @@ def listing_detail(request, id):
 			# yes, listing already exists, so show listing's data
 			l = Listing.objects.all().get(id=id)
 			data = serializers.serialize('json', [l])
+			data_as_list = json.loads(data)
 			response_data = {}
 			response_data['ok'] = True
-			response_data['info'] = data
+			response_data['info'] = data_as_list[0]
 			return JsonResponse(response_data)
 
 		else:
