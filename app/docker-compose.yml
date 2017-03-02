@@ -26,4 +26,4 @@ web:
     - ./web:/app
   ports:
     - "8000:8000"
-  command: "mod_wsgi-express start-server --reload-on-changes --log-to-terminal ./web/wsgi.py"
+  command: bash -c "pip install requests && mod_wsgi-express start-server --reload-on-changes --log-to-terminal ./web/wsgi.py"
