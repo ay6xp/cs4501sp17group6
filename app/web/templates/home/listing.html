@@ -1,22 +1,20 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Listing</title>
+</head>
+<body>
 
-{% block title %} 
-  Available Listings 
-{% endblock %}
-
-{% block content %}
-  <div>
-    <h1>{{ listing.title }}</h1>
-    <h2>Description: {{ listing.description }}</h2>
-      <ul>
-          <li>Address: {{ listing.address }}</li>
-          <li>Residence Type: {{ listing.residence_type }}</li>
-          <li>Bedrooms: {{ listing.num_of_bedrooms }}</li>
-          <li>Bathrooms: {{ listing.num_of_bathrooms }}</li>
-          <li>Price: {{ listing.price }}</li>
-          <li>Square footage: {{ listing.sqft }}</li>
-          <li>Max Occupancy: {{ listing.max_occupancy }}</li>
-          <li>Availability dates: {{ listing.availability_start }} to {{ listing.availability_end }}</li>
-      </ul>
-  </div>
-{% endblock %}
+     <h1>Listings: </h1>
+       {% if all_listings %}
+       <ul>
+         {% for listing in all_listings %}
+         <li><a href="listing/{{ listing.id }}/">{{ listing.title }}</a></li>
+         {% endfor %}
+       </ul>
+       {% else %}
+         <h3>No current listings.</h3>
+       {% endif %}
+</body>
+</html>

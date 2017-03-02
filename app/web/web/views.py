@@ -19,13 +19,18 @@ def index(request):
 
     return render(request, 'home/index.html', {'all_listings': all_listings})
 
+def listing(request):
+    req = requests.get(_url('listings/')).json()
+    all_listings = req['info']
+    return render(request, 'home/listing.html', {'all_listings': all_listings})
+
 
 def listing_detail(request, id):
     req = requests.get(_url('listings/') + str(id) + '/').json()
     if req['ok']:
         data = req['info']
 
-        return render(request, 'home/listing.html', {'listing': data['fields'], 'pk': data['pk']})
+        return render(request, 'home/listing_detail.html', {'listing': data['fields'], 'pk': data['pk']})
     else:
         return render(request, 'home/error.html', {'msg': 'Listing with ID %s does not exist.' % id})
 
