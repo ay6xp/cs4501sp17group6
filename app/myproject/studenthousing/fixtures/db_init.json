@@ -7,7 +7,7 @@
       	"password": "password",
       	"email": "jane_doe_01@gmail.com",
       	"phone_num": "4341234567",
-      	"joined_date": "2017-02-14T03:30:00-05:00"
+      	"joined_date": "2017-02-14"
     	}
 	},
 	{
@@ -26,9 +26,9 @@
       		"availability_end": "2017-07-30",
       		"availability_status": "AVAIL",
       		"description": "A beautiful townhouse available for sale in Charlottesville, VA!",
-      		"post_date": "2017-02-11T03:00:00-05:00",
-      		"post_expiration_date": "2017-07-30T14:00:00-05:00",
-      		"last_edited_date": "2017-02-14T15:00:00-05:00",
+      		"post_date": "2017-02-11",
+      		"post_expiration_date": "2017-07-30",
+      		"last_edited_date": "2017-02-14",
   		    "laundry": false,
   	    	"parking": false,
   	    	"pet_friendly": false,

@@ -3,6 +3,7 @@ import json
 from django.http import JsonResponse
 from .models import User, Listing
 from .forms import UserForm, ListingForm
+from django.core import serializers
 from django.forms.models import model_to_dict
 from datetime import datetime
 
@@ -56,18 +57,19 @@ def listing_create(request):
 		if form.is_valid():
 
 			new_listing = form.save()
+			data = serializers.serialize('json', [new_listing])
 
 			response_data = {}
 			response_data['ok'] = True
 			response_data['message'] = 'listing %s successfully created' % id
-			response_data['info'] = model_to_dict(new_listing)
+			response_data['info'] = data
 			return JsonResponse(response_data)
 
 		else:
 			# the form isn't valid
 			response_data = {}
 			response_data['ok'] = False
-			response_data['message'] = 'form data was invalid'
+			response_data['message'] = 'form data was invalid: %s' % form.errors
 			return JsonResponse(response_data)
 
 	else:
@@ -91,15 +93,16 @@ def listing_detail(request, id):
 			# does listing already exist??
 			if Listing.objects.all().filter(id=id).exists():
 				# yes, listing already exists, so update it
-				curr_listing = Listing.objects.all().get(id=id)
+				l = Listing.objects.all().get(id=id)
+				data = serializers.serialize('json', [l])
 
-				f = ListingForm(request.POST, instance=curr_listing)
+				f = ListingForm(request.POST, instance=l)
 				f.save()
 
 				response_data = {}
 				response_data['ok'] = True
 				response_data['message'] = 'listing %s successfully updated' % id
-				response_data['info'] = model_to_dict(curr_listing)
+				response_data['info'] = data
 				return JsonResponse(response_data)
 
 			else:
@@ -113,7 +116,7 @@ def listing_detail(request, id):
 			# the form isn't valid
 			response_data = {}
 			response_data['ok'] = False
-			response_data['message'] = 'form data was invalid'
+			response_data['message'] = form.errors
 			return JsonResponse(response_data)
 
 	else:
@@ -122,10 +125,11 @@ def listing_detail(request, id):
 		# does listing exist?
 		if Listing.objects.all().filter(id=id).exists():
 			# yes, listing already exists, so show listing's data
-			curr_listing = Listing.objects.all().get(id=id)
+			l = Listing.objects.all().get(id=id)
+			data = serializers.serialize('json', [l])
 			response_data = {}
 			response_data['ok'] = True
-			response_data['info'] = model_to_dict(curr_listing)
+			response_data['info'] = data
 			return JsonResponse(response_data)
 
 		else:

@@ -13,5 +13,5 @@ urlpatterns = [
 	url(r'^api/v1/listings/$', views.listings, name='listings'),
 	url(r'^api/v1/listings/new/$', views.listing_create, name='new_listing'),
 	url(r'^api/v1/listings/(?P<id>[0-9]+)/$', views.listing_detail, name='listing_detail'),
-	url(r'^api/v1/listings/delete/(P<id>[0-9]+)/$', views.listing_delete, name='delete_listing')
+	url(r'^api/v1/listings/delete/(?P<id>[0-9]+)/$', views.listing_delete, name='delete_listing')
 ]
