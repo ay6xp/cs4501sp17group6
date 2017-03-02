@@ -16,7 +16,6 @@ def index(request):
 
     req = requests.get(_url('listings/')).json()
     all_listings = req['info']
-    print(req['info'])
 
     return render(request, 'home/index.html', {'all_listings': all_listings})
 
