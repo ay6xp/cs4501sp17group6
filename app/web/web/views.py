@@ -22,6 +22,10 @@ def index(request):
 
 def listing_detail(request, id):
     req = requests.get(_url('listings/') + str(id) + '/').json()
-    data = req['info']
+    if req['ok']:
+        data = req['info']
 
-    return render(request, 'home/listing.html', {'listing': data['fields'], 'pk': data['pk']})
+        return render(request, 'home/listing.html', {'listing': data['fields'], 'pk': data['pk']})
+    else:
+        return render(request, 'home/error.html', {'msg': 'Listing with ID %s does not exist.' % id})
+

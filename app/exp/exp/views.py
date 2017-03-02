@@ -26,9 +26,9 @@ def get_listing(request, id):
 	res = requests.get(_url('listings/') + str(id) + '/').json()
 
 	if res['ok']:
-		return JsonResponse({'info': res['info']})
+		return JsonResponse({'info': res['info'], 'ok': True})
 	else:
-		return JsonResponse({'message': res['message']})
+		return JsonResponse({'message': res['message'], 'ok': False})
 
 def get_expiring_soon_listings(request):
 	res = requests.get(_url('listings/')).json()
