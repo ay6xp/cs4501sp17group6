@@ -3,19 +3,14 @@ import requests
 # import urllib.request
 # import urllib.parse
 from django.http import JsonResponse
+from django.conf import settings
 from datetime import datetime, timedelta
-
-#
-#	helper function for url construction
-#
-def _url(path):
-	return 'http://models-api:8000/studenthousing/api/v1/' + path
 
 #
 #	Listings
 #
 def get_all_listings(request):
-	res = requests.get(_url('listings/')).json()
+	res = requests.get(settings.API_DIR + 'listings/').json()
 
 	if res['ok']:
 		return JsonResponse({'info': res['info']})
@@ -23,7 +18,7 @@ def get_all_listings(request):
 		return JsonResponse({'message': res['message']})
 
 def get_listing(request, id):
-	res = requests.get(_url('listings/') + str(id) + '/').json()
+	res = requests.get(settings.API_DIR + 'listings/' + str(id) + '/').json()
 
 	if res['ok']:
 		return JsonResponse({'info': res['info'], 'ok': True})
@@ -31,7 +26,7 @@ def get_listing(request, id):
 		return JsonResponse({'message': res['message'], 'ok': False})
 
 def get_expiring_soon_listings(request):
-	res = requests.get(_url('listings/')).json()
+	res = requests.get(settings.API_DIR + 'listings/').json()
 
 	if res['ok']:
 
@@ -62,7 +57,7 @@ def get_expiring_soon_listings(request):
 		return JsonResponse({'message': res['message']})
 
 def get_recently_posted_listings(request):
-	res = requests.get(_url('listings/')).json()
+	res = requests.get(settings.API_DIR + 'listings/').json()
 
 	if res['ok']:
 
@@ -97,7 +92,7 @@ def get_recently_posted_listings(request):
 #	Users
 #
 def get_all_users(request):
-	res = requests.get(_url('users/')).json()
+	res = requests.get(settings.API_DIR + 'users/').json()
 
 	if res['ok']:
 		return JsonResponse({'info': res['info']})
@@ -105,7 +100,7 @@ def get_all_users(request):
 		return JsonResponse({'message': res['message']})
 
 def get_user(request, id):
-	res = requests.get(_url('users/') + str(id) + '/').json()
+	res = requests.get(settings.API_DIR + 'users/' + str(id) + '/').json()
 
 	if res['ok']:
 		return JsonResponse({'info': res['info'], 'ok': True})
@@ -113,7 +108,7 @@ def get_user(request, id):
 		return JsonResponse({'message': res['message'], 'ok': False})
 
 def get_recently_joined_users(request):
-	res = requests.get(_url('users/')).json()
+	res = requests.get(settings.API_DIR + 'users/').json()
 
 	if res['ok']:
 
