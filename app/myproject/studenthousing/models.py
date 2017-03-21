@@ -11,6 +11,11 @@ class User(models.Model):
     def __str__(self):
         return self.username
 
+class Authenticator(models.Model):
+    # attributes
+    authenticator = models.CharField(primary_key=True, max_length=64)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    date_created = models.DateTimeField(auto_now_add=True)
 
 class Listing(models.Model):
     # attributes
