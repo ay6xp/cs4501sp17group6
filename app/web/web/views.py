@@ -1,5 +1,4 @@
 from django.shortcuts import render
-# from .models import Listing
 import requests
 import urllib.request
 import urllib.parse
@@ -11,9 +10,8 @@ from django.conf import settings
 
 
 def index(request):
-    req = requests.get(settings.API_DIR + 'listings/').json()
-    all_listings = req['info']
-    return render(request, 'home/index.html', {'all_listings': all_listings})
+    req = requests.get(settings.API_DIR + 'index/').json()
+    return render(request, 'home/index.html', req)
 
 
 def listing(request):
