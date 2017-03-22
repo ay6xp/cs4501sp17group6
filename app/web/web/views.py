@@ -29,6 +29,15 @@ def listing_post_recently(request):
     print(req)
     return JsonResponse(req)
 
+def listing_detail(request, id):
+    req = requests.get(settings.API_DIR + 'listings/' + str(id) + '/').json()
+    if req['ok']:
+        data = req['info']
+
+        return render(request, 'home/listing_detail.html', {'listing': data['fields'], 'pk': data['pk']})
+    else:
+        return render(request, 'home/error.html', {'msg': 'Listing with ID %s does not exist.' % id})
+
 
 def user(request):
     req = requests.get(settings.API_DIR + 'users/').json()
@@ -40,16 +49,6 @@ def user_recent(request):
     print(req)
     return JsonResponse(req)
 
-def listing_detail(request, id):
-    req = requests.get(settings.API_DIR + 'listings/' + str(id) + '/').json()
-    if req['ok']:
-        data = req['info']
-
-        return render(request, 'home/listing_detail.html', {'listing': data['fields'], 'pk': data['pk']})
-    else:
-        return render(request, 'home/error.html', {'msg': 'Listing with ID %s does not exist.' % id})
-
-
 def user_detail(request, id):
     req = requests.get(settings.API_DIR + 'users/' + str(id) + '/').json()
     if req['ok']:
@@ -57,4 +56,4 @@ def user_detail(request, id):
 
         return render(request, 'home/user_detail.html', {'user': data['fields'], 'pk': data['pk']})
     else:
-        return render(request, 'home/error.html', {'msg': 'user with ID %s does not exist.' % id})
+        return render(request, 'home/error.html', {'msg': 'User with ID %s does not exist.' % id})
