@@ -89,7 +89,6 @@ def register(request):
     if request.method =='GET':
         # display the login form page
         register_form = RegisterForm()
-        print('helloooo')
         return render(request, 'home/register.html', {'form': register_form, 'auth':auth})
 
     # Creates a new instance of our login_form and gives it our POST data
@@ -105,11 +104,9 @@ def register(request):
         password = f.cleaned_data['password']
         email = f.cleaned_data['email']
         phone_num = f.cleaned_data['phone_num']
-        joined_date = f.cleaned_data['joined_date']
 
         response = requests.post(settings.API_DIR + 'users/register/', data={'username': username, 'password': password, 
-                                                                'email': email, 'phone_num': phone_num, 
-                                                                'joined_date': joined_date}).json()
+                                                                'email': email, 'phone_num': phone_num}).json()
 
         # Get next page
         next = reverse('login')
