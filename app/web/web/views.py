@@ -113,7 +113,7 @@ def register(request):
         # Check if the experience layer said they gave us incorrect information
         if not response['ok']:
             # Couldn't log them in, send them back to login page with error
-            return render(request, 'home/register.html', {'msg': "Invalid signup", 'form': register_form})
+            return render(request, 'home/register.html', {'msg': "Invalid signup", 'form': f})
         return HttpResponseRedirect(next)
 
         """ If we made it here, we can log them in. """
