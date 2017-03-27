@@ -58,13 +58,37 @@ def user_detail(request, id):
     else:
         return render(request, 'home/error.html', {'msg': 'User with ID %s does not exist.' % id})
 
+
+def login(request):
+    auth = request.COOKIES.get('auth')
+    if auth:
+        return render(request, 'home/index.html', auth)
+    if request.method == 'GET':
+        login_form = LoginForm()
+        #next = request.GET.get('login') or reverse('index')
+        return render(request, 'home/login.html', {'form':login_form, 'auth':auth})
+    f = LoginForm(request.POST)
+    if not f.is_valid():
+        login_form = LoginForm()
+        return render(request, 'home/login.html', {'errorMessage': "Please fill out all fields",'form': login_form})
+    username = f.cleaned_data['username']
+    password = f.cleaned_data['password']
+    response = requests.post('http://exp-api:8000/api/v1/login/', data={'username':username, 'password':password}).json()
+    if  response['ok'] == False:
+        #error occurred
+        login_form = LoginForm()
+        return render(request, 'home/login.html', {'errorMessage': response['resp'],'form': login_form})
+    auth_token = response['resp']
+    next = HttpResponseRedirect(reverse('index'))
+    next.set_cookie('auth',auth_token)
+    return next
+
 def register(request):
     auth = request.COOKIES.get('auth')
     # If we received a GET request instead of a POST request
     if request.method =='GET':
         # display the login form page
         register_form = RegisterForm()
-        print('helloooo')
         return render(request, 'home/register.html', {'form': register_form, 'auth':auth})
 
     # Creates a new instance of our login_form and gives it our POST data
@@ -80,18 +104,16 @@ def register(request):
         password = f.cleaned_data['password']
         email = f.cleaned_data['email']
         phone_num = f.cleaned_data['phone_num']
-        joined_date = f.cleaned_data['joined_date']
 
         response = requests.post(settings.API_DIR + 'users/register/', data={'username': username, 'password': password, 
-                                                                'email': email, 'phone_num': phone_num, 
-                                                                'joined_date': joined_date}).json()
+                                                                'email': email, 'phone_num': phone_num}).json()
 
         # Get next page
         next = reverse('login')
         # Check if the experience layer said they gave us incorrect information
         if not response['ok']:
             # Couldn't log them in, send them back to login page with error
-            return render(request, 'home/register.html', {'msg': "Invalid signup", 'form': register_form})
+            return render(request, 'home/register.html', {'msg': "Invalid signup", 'form': f})
         return HttpResponseRedirect(next)
 
         """ If we made it here, we can log them in. """
@@ -102,3 +124,4 @@ def register(request):
         response.set_cookie("auth", authenticator)
 
         return response
+
