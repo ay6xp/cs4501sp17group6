@@ -17,4 +17,5 @@ urlpatterns = [
     url(r'^home/users/(?P<id>[0-9]+)/$', views.user_detail, name='user_detail'),
     url(r'^home/users/recently_joined/$', views.user_recent, name='users_recent'),
     url(r'^login/$', views.login, name='login'),
+    url(r'^register/$', views.register, name='register'),
 ]

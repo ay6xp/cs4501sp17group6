@@ -7,12 +7,12 @@ from json import JSONEncoder
 from django.template import loader
 from django.http import HttpResponse, JsonResponse
 from django.conf import settings
+from .forms import RegisterForm
 
 
 def index(request):
     req = requests.get(settings.API_DIR + 'index/').json()
     return render(request, 'home/index.html', req)
-
 
 def listing(request):
     req = requests.get(settings.API_DIR + 'listings/').json()
@@ -58,6 +58,7 @@ def user_detail(request, id):
     else:
         return render(request, 'home/error.html', {'msg': 'User with ID %s does not exist.' % id})
 
+
 def login(request):
     auth = request.COOKIES.get('auth')
     if auth:
@@ -81,3 +82,49 @@ def login(request):
     next = HttpResponseRedirect(reverse('index'))
     next.set_cookie('auth',auth_token)
     return next
+
+def register(request):
+    auth = request.COOKIES.get('auth')
+    # If we received a GET request instead of a POST request
+    if request.method =='GET':
+        # display the login form page
+        register_form = RegisterForm()
+        print('helloooo')
+        return render(request, 'home/register.html', {'form': register_form, 'auth':auth})
+
+    # Creates a new instance of our login_form and gives it our POST data
+    f = RegisterForm(request.POST)
+
+    # Check if the form instance is invalid
+    if not f.is_valid():
+        # Form was bad -- send them back to login page and show them an error
+        return render(request, 'home/register.html', {'msg': "Please fill out the registration form again.", 'form': RegisterForm, 'auth':auth})
+    else:
+        # Sanitize fields
+        username = f.cleaned_data['username']
+        password = f.cleaned_data['password']
+        email = f.cleaned_data['email']
+        phone_num = f.cleaned_data['phone_num']
+        joined_date = f.cleaned_data['joined_date']
+
+        response = requests.post(settings.API_DIR + 'users/register/', data={'username': username, 'password': password, 
+                                                                'email': email, 'phone_num': phone_num, 
+                                                                'joined_date': joined_date}).json()
+
+        # Get next page
+        next = reverse('login')
+        # Check if the experience layer said they gave us incorrect information
+        if not response['ok']:
+            # Couldn't log them in, send them back to login page with error
+            return render(request, 'home/register.html', {'msg': "Invalid signup", 'form': register_form})
+        return HttpResponseRedirect(next)
+
+        """ If we made it here, we can log them in. """
+        # Set their login cookie and redirect to back to wherever they came from
+        authenticator = resp['resp']['authenticator']
+
+        response = HttpResponseRedirect(next)
+        response.set_cookie("auth", authenticator)
+
+        return response
+
