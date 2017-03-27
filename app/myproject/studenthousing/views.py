@@ -292,7 +292,9 @@ def user_detail(request, id):
 						# it is the same user! they're updating their username to be the 
 						# same as it already was. no biggie, we can proceed
 						f = UserForm(request.POST, instance=curr_user)
-						f.save()
+						curr_user = f.save(commit=False)
+						curr_user.password = hashers.make_password(request.POST['password'])
+						curr_user.save()
 
 						response_data = {}
 						response_data['ok'] = True
