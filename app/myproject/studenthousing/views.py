@@ -6,6 +6,9 @@ from .forms import UserForm, ListingForm
 from django.core import serializers
 from django.forms.models import model_to_dict
 from datetime import datetime
+import os
+import hmac
+from django.conf import settings
 
 # Create your views here.
 
@@ -355,4 +358,166 @@ def user_delete(request, id):
 		response_data = {}
 		response_data['ok'] = False
 		response_data['message'] = 'this action only supports GET requests'
+		return JsonResponse(response_data)
+
+#
+#	"create" functionality of Authenticator CRUD
+#
+def auth_create(request):
+	if request.method == 'POST':
+		# POST request
+		# create a form instance and populate it with data from the request
+		form = UserForm(request.POST)
+		if 'user_id' in request.POST:
+			# get user id for ease of use
+			u_id = request.POST['user_id']
+
+			# does authenticator exist for this user?
+			auth_obj = Authenticator.objects.filter(user_id=u_id)
+
+			if auth_obj.exists():
+				# yep it exists! woohoo
+				response_data = {}
+				response_data['ok'] = True
+				response_data['info'] = auth_obj[0].authenticator
+				return JsonResponse(response_data)
+
+			else:
+				# one doesn't exist, so we need to make it
+				auth_token = hmac.new(
+					key = settings.SECRET_KEY.encode('utf-8'),
+					msg = os.urandom(32),
+					digestmod = 'sha256',
+				).hexdigest()
+
+				preexisting = False
+				# by some probabilistic miracle, did this token already exist?
+				if Authenticator.objects.filter(authenticator=auth_token).exists():
+					# yes indeedy
+					preexisting = True
+
+				# keep remaking it until there's no hash collision
+				while preexisting:
+					auth_token = hmac.new(
+						key = settings.SECRET_KEY.encode('utf-8'),
+						msg = os.urandom(32),
+						digestmod = 'sha256',
+					).hexdigest()
+
+					if Authenticator.objects.filter(authenticator=auth_token).exists():
+						preexisting = True
+					else:
+						preexisting = False
+
+				# we have a unique token now
+				new_auth_obj = Authenticator.objects.create(
+					authenticator = auth_token,
+					user_id = u_id
+				)
+
+				response_data = {}
+				response_data['ok'] = True
+				response_data['message'] = 'authenticator for user %s successfully created' % u_id
+				response_data['info'] = auth_token
+				return JsonResponse(response_data)
+
+		else:
+			# the form isn't valid
+			response_data = {}
+			response_data['ok'] = False
+			response_data['message'] = 'no user id included'
+			return JsonResponse(response_data)
+
+	else:
+		# GET (or other) request
+		response_data = {}
+		response_data['ok'] = False
+		response_data['message'] = 'this action only supports POST requests'
+		return JsonResponse(response_data)
+
+#
+#	"read" functionality of Authenticator CRUD
+#
+def get_auth(request, auth_token):
+	# what type of HTTP request was made?
+	if request.method == 'GET':
+		# GET request
+
+		# does the authenticator exist?
+		if Authenticator.objects.filter(authenticator=auth_token).exists():
+			response_data = {}
+			response_data['ok'] = True
+			response_data['message'] = 'this authenticator exists'
+			return JsonResponse(response_data)
+		else:
+			response_data = {}
+			response_data['ok'] = False
+			response_data['message'] = 'this authenticator does not exist'
+			return JsonResponse(response_data)
+
+	else:
+		# POST (or other) request
+		response_data = {}
+		response_data['ok'] = False
+		response_data['message'] = 'this action only supports GET requests'
+		return JsonResponse(response_data)
+
+def get_auth_user(request, auth_token):
+	# what type of HTTP request was made?
+	if request.method == 'GET':
+		# GET request
+
+		# does the authenticator exist?
+		if Authenticator.objects.filter(authenticator=auth_token).exists():
+			response_data = {}
+			response_data['ok'] = True
+			response_data['message'] = 'this authenticator exists'
+			response_data['info'] = Authenticator.objects.filter(authenticator=auth_token)[0].user_id
+			return JsonResponse(response_data)
+		else:
+			response_data = {}
+			response_data['ok'] = False
+			response_data['message'] = 'this authenticator does not exist'
+			return JsonResponse(response_data)
+
+	else:
+		# POST (or other) request
+		response_data = {}
+		response_data['ok'] = False
+		response_data['message'] = 'this action only supports GET requests'
+		return JsonResponse(response_data)
+
+#
+#	"delete" functionality of Authenticator CRUD
+#
+def auth_delete(request):
+	if request.method == 'POST':
+		# POST request
+
+		if 'auth_token' in request.POST:
+			# it exists, so delete it
+			try:
+				Authenticator.objects.filter(authenticator=request.POST['auth_token']).delete()
+			except:
+				response_data = {}
+				response_data['ok'] = False
+				response_data['message'] = 'authenticator deletion failed'
+				return JsonResponse(response_data)
+
+			response_data = {}
+			response_data['ok'] = True
+			response_data['message'] = 'authenticator successfully deleted'
+
+		else:
+			# invalid POST request
+			response_data = {}
+			response_data['ok'] = False
+			response_data['message'] = 'no authenticator was specified'
+			return JsonResponse(response_data)
+
+	else:
+		# GET (or other) request
+		response_data = {}
+		response_data['ok'] = False
+		response_data['message'] = 'this action only supports POST requests'
 		return JsonResponse(response_data)

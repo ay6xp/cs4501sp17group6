@@ -13,5 +13,10 @@ urlpatterns = [
 	url(r'^api/v1/listings/$', views.listings, name='listings'),
 	url(r'^api/v1/listings/new/$', views.listing_create, name='new_listing'),
 	url(r'^api/v1/listings/(?P<id>[0-9]+)/$', views.listing_detail, name='listing_detail'),
-	url(r'^api/v1/listings/delete/(?P<id>[0-9]+)/$', views.listing_delete, name='delete_listing')
+	url(r'^api/v1/listings/delete/(?P<id>[0-9]+)/$', views.listing_delete, name='delete_listing'),
+	# Authenticator CRUD
+	url(r'^api/v1/authenticators/new/$', views.auth_create, name="new_auth"),
+	url(r'^api/v1/authenticators/get/(?P<auth_token>[\w.@+-]+)/$', views.get_auth, name="get_auth"),
+	url(r'^api/v1/authenticators/get/(?P<auth_token>[\w.@+-]+)/$', views.get_auth_user, name="get_auth_user"),
+	url(r'^api/v1/authenticators/delete/$', views.auth_delete, name='delete_auth')
 ]
