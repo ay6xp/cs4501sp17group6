@@ -1,8 +1,10 @@
 import json
 
 from django.http import JsonResponse
-from .models import User, Listing
+from studenthousing import models
+from .models import User, Listing, Authenticator
 from .forms import UserForm, ListingForm
+from django import db
 from django.core import serializers
 from django.contrib.auth import hashers
 from django.forms.models import model_to_dict
