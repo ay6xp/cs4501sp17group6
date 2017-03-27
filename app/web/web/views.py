@@ -57,3 +57,27 @@ def user_detail(request, id):
         return render(request, 'home/user_detail.html', {'user': data['fields'], 'pk': data['pk']})
     else:
         return render(request, 'home/error.html', {'msg': 'User with ID %s does not exist.' % id})
+
+def login(request):
+    auth = request.COOKIES.get('auth')
+    if auth:
+        return render(request, 'home/index.html', auth)
+    if request.method == 'GET':
+        login_form = LoginForm()
+        #next = request.GET.get('login') or reverse('index')
+        return render(request, 'home/login.html', {'form':login_form, 'auth':auth})
+    f = LoginForm(request.POST)
+    if not f.is_valid():
+        login_form = LoginForm()
+        return render(request, 'home/login.html', {'errorMessage': "Please fill out all fields",'form': login_form})
+    username = f.cleaned_data['username']
+    password = f.cleaned_data['password']
+    response = requests.post('http://exp-api:8000/api/v1/login/', data={'username':username, 'password':password}).json()
+    if  response['ok'] == False:
+        #error occurred
+        login_form = LoginForm()
+        return render(request, 'home/login.html', {'errorMessage': response['resp'],'form': login_form})
+    auth_token = response['resp']
+    next = HttpResponseRedirect(reverse('index'))
+    next.set_cookie('auth',auth_token)
+    return next
