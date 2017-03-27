@@ -15,5 +15,6 @@ urlpatterns = [
     url(r'^home/listings/recently_posted/$', views.listing_post_recently, name='recent_listings'),
     url(r'^home/users/$', views.user, name='user'),
     url(r'^home/users/(?P<id>[0-9]+)/$', views.user_detail, name='user_detail'),
-    url(r'^home/users/recently_joined/$', views.user_recent, name='users_recent')
+    url(r'^home/users/recently_joined/$', views.user_recent, name='users_recent'),
+    url(r'^register/$', views.register, name='register'),
 ]
