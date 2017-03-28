@@ -204,12 +204,13 @@ def new_listing(request):
         return JsonResponse(response_data)
 
     # get authenticated user's id
-    response = requests.get(settings.API_DIR + 'get_auth_user/').json()
+    response = requests.get(settings.API_DIR + 'authenticators/get_auth_user/' + auth + '/').json()
     if not response['ok']:
         return JsonResponse(response)
     else:
+        print('woohoo from line 213')
         user = response['info']
-        resp = requests.post(settings.API_DIR + 'listing_create/', data={
+        resp = requests.post(settings.API_DIR + 'listings/new/', data={
             'title': title,
             'address': address,
             'residence_type': residence_type,

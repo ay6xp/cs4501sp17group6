@@ -120,12 +120,13 @@ def new_listing(request):
             'yard':yard,
             'images':images,
             'gym':gym,
-            'maintenance':maintenance
+            'maintenance':maintenance,
+            'auth': auth
         }).json()
 
         if not response['ok']:
             return render(request, 'home/new_listing.html', {'msg': response['message'], 'form':form, 'auth':auth})
-        response = HttpResponseRedirect('/')
+        response = HttpResponseRedirect(reverse('index'))
         return response
 
 
