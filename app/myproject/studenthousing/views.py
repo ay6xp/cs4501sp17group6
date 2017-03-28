@@ -233,17 +233,14 @@ def user_create(request):
 
 			else:
 				# no one else already has this username, so we can use it
-				new_user = models.User(username=username,
-									   password=hashers.make_password(request.POST['password']),
-									   email=request.POST['email'],
-									   phone_num=request.POST['phone_num']
-									  )
+				new_user = models.User(username=username, password=hashers.make_password(request.POST['password']), email=request.POST['email'], phone_num=request.POST['phone_num'])
 				try:
 					new_user.save()
 				except db.Error:
 					response_data = {}
 					response_data['ok'] = False
 					response_data['message'] = 'db error'
+					return JsonResponse(response_data)
 
 				response_data = {}
 				response_data['ok'] = True

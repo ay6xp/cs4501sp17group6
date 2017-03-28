@@ -4,11 +4,9 @@ from datetime import datetime
 
 class RegisterForm(forms.Form):
     username = forms.CharField(max_length=50, required=True)
-<<<<<<< HEAD
     password = forms.CharField(max_length=50, required=True, widget=forms.PasswordInput())
     email = forms.EmailField(max_length=50, required=True)
     phone_num = forms.IntegerField(label='Phone Number', required=True)
-    joined_date = forms.DateField()
 
 class LoginForm(forms.Form):
 	username = forms.CharField(max_length=50, required=True)

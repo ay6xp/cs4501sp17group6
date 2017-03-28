@@ -174,7 +174,6 @@ def new_listing(request, auth):
 	availability_status = request.POST.get('availability_status', 'default')
 	description = request.POST.get('description', 'default')
 	post_expiration_date = request.POST.get('post_expiration_date', 'default')
-
 	laundry = request.POST.get('laundry', 'default')
 	parking = request.POST.get('parking', 'default')
 	pet_friendly = request.POST.get('pet_friendly', 'default')
@@ -190,51 +189,45 @@ def new_listing(request, auth):
 	images = request.POST.get('images', 'default')
 	gym = request.POST.get('gym', 'default')
 	maintenance = request.POST.get('maintenance', 'default')
-
 	auth = request.POST.get('auth', 'none')
-
-    # get authenticated user's id
-    response = requests.get(settings.API_DIR + 'get_auth_user/').json()
-    if not response['ok']:
-    	return JsonResponse(response)
-    else:
-    	user = response['info']
-    	resp = requests.post(settings.API_DIR + 'listing_create/', data={
-    		'title':title,
-    		'address':address,
-    		'residence_type':residence_type,
-    		'num_of_bedrooms':num_of_bedrooms,
-    		'num_of_bathrooms':num_of_bathrooms,
-    		'price':price,
-    		'sqft':sqft,
-    		'lot_size':lot_size,
-    		'max_occupancy':max_occupancy,
-    		'availability_start':availability_start,
-    		'availability_end':availability_end,
-    		'availability_status':availability_status,
-    		'description':description,
-    		'post_expiration_date':post_expiration_date,
-    		'laundry':laundry,
-    		'parking':parking,
-    		'pet_friendly':pet_friendly,
-    		'smoking':smoking,
-    		'water':water,
-    		'gas':gas,
-    		'power':power,
-    		'wifi':wifi,
-    		'wheelchair_access':wheelchair_access,
-    		'furnished':furnished,
-    		'balcony':balcony,
-    		'yard':yard,
-    		'images':images,
-    		'gym':gym,
-    		'maintenance':maintenance,
-    		'user':user
-    	}).json()
-
-    	return JsonResponse(resp)
-
-
+	# get authenticated user's id
+	response = requests.get(settings.API_DIR + 'get_auth_user/').json()
+	if not response['ok']:
+		return JsonResponse(response)
+	else:
+		user = response['info']
+		resp = requests.post(settings.API_DIR + 'listing_create/', data={
+			'title':title,
+			'address':address,
+			'residence_type':residence_type,
+			'num_of_bedrooms':num_of_bedrooms,
+			'num_of_bathrooms':num_of_bathrooms,
+			'price':price,
+			'sqft':sqft,
+			'lot_size':lot_size,
+			'max_occupancy':max_occupancy,
+			'availability_start':availability_start,
+			'availability_end':availability_end,
+			'availability_status':availability_status,
+			'description':description,
+			'post_expiration_date':post_expiration_date,
+			'laundry':laundry,
+			'parking':parking,
+			'pet_friendly':pet_friendly,
+			'smoking':smoking,
+			'water':water,
+			'gas':gas,
+			'power':power,
+			'wifi':wifi,
+			'wheelchair_access':wheelchair_access,
+			'furnished':furnished,
+			'balcony':balcony,
+			'yard':yard,
+			'images':images,
+			'gym':gym,
+			'maintenance':maintenance,
+			'user':user}).json()
+	return JsonResponse(resp)
 
 #
 #	Users
@@ -282,14 +275,12 @@ def get_recently_joined_users(request):
 			return JsonResponse({'message': 'no new users have joined in the last 3 days'})
 
 		return JsonResponse({'info': recent_list})
-
-	else:
-		return JsonResponse({'message': res['message']})
+	return JsonResponse({'message': res['message']})
 
 def register(request):
 	username = request.POST.get('username', 'none')
-    password = request.POST.get('password', 'none')
-    email = request.POST.get('email', 'none')
-    phone_num = request.POST.get('phone_num', 'none')
-    user = requests.post(settings.API_DIR + 'users/register/', data = {'username': username, 'password': password, 'email': email, 'phone_num': phone_num}).json()
+	password = request.POST.get('password', 'none')
+	email = request.POST.get('email', 'none')
+	phone_num = request.POST.get('phone_num', 'none')
+	user = requests.post(settings.API_DIR + 'users/new/', data = {'username':username, 'password':password, 'email':email, 'phone_num':phone_num}).json()
 	return JsonResponse(user, safe=False)
