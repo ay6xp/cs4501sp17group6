@@ -5,9 +5,11 @@ import urllib.parse
 import json
 from json import JSONEncoder
 from django.template import loader
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse
 from django.conf import settings
 from .forms import RegisterForm
+from .forms import LoginForm
+from django.core.urlresolvers import reverse
 
 
 def index(request):
@@ -73,14 +75,14 @@ def login(request):
         return render(request, 'home/login.html', {'errorMessage': "Please fill out all fields",'form': login_form})
     username = f.cleaned_data['username']
     password = f.cleaned_data['password']
-    response = requests.post('http://exp-api:8000/api/v1/login/', data={'username':username, 'password':password}).json()
+    response = requests.post(settings.API_DIR + 'login/', data={'username':username, 'password':password}).json()
     if  response['ok'] == False:
         #error occurred
         login_form = LoginForm()
         return render(request, 'home/login.html', {'errorMessage': response['resp'],'form': login_form})
     auth_token = response['resp']
     next = HttpResponseRedirect(reverse('index'))
-    next.set_cookie('auth',auth_token)
+    next.set_cookie('auth', auth_token)
     return next
 
 def register(request):
