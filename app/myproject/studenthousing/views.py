@@ -342,6 +342,34 @@ def user_detail(request, id):
 			response_data['message'] = 'no user exists with the id %s' % id
 			return JsonResponse(response_data)
 
+def user_from_name(request, username):
+	if request.method == 'GET':
+		# GET request
+		# does this user exist?
+		if User.objects.all().filter(username=username).exists():
+			# yes, user exists, so we can return their information
+			curr_user = User.objects.all().get(username=username)
+			data = {
+			'username': curr_user.username, 'password': curr_user.password, 'email': curr_user.email, 'phone_num': curr_user.phone_num, 'date_joined': curr_user.date_joined, 'pk': curr_user.pk
+			}
+			response_data = {}
+			response_data['ok'] = True
+			response_data['info'] = data
+			return JsonResponse(response_data)
+
+		else:
+			# no, that user doesn't exist, so we can't get their info
+			response_data = {}
+			response_data['ok'] = False
+			response_data['message'] = 'no user exists with the username %s' % username
+			return JsonResponse(response_data)
+
+	else:
+	# POST (or other) request
+		response_data = {}
+		response_data['ok'] = False
+		response_data['message'] = 'this action only supports GET requests'
+		return JsonResponse(response_data)	
 
 #
 #	"delete" functionality of User CRUD

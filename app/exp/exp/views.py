@@ -3,6 +3,7 @@ import requests
 from django.http import JsonResponse
 from django.conf import settings
 from datetime import datetime, timedelta
+from django.contrib.auth import hashers
 
 
 def index(request):
@@ -293,11 +294,32 @@ def logout(request):
 
 
 def register(request):
-    username = request.POST.get('username', 'none')
-    password = request.POST.get('password', 'none')
-    email = request.POST.get('email', 'none')
-    phone_num = request.POST.get('phone_num', 'none')
-    user = requests.post(settings.API_DIR + 'users/new/',
-                         data={'username': username, 'password': password, 'email': email,
-                               'phone_num': phone_num}).json()
-    return JsonResponse(user, safe=False)
+	username = request.POST.get('username', 'none')
+	password = request.POST.get('password', 'none')
+	email = request.POST.get('email', 'none')
+	phone_num = request.POST.get('phone_num', 'none')
+	user = requests.post(settings.API_DIR + 'users/new/', data = {'username':username, 'password':password, 'email':email, 'phone_num':phone_num}).json()
+	return JsonResponse(user, safe=False)
+
+def login(request):
+	username = request.POST.get('username', 'none')
+	pass_attempt = request.POST.get('password', 'none')
+
+	resp = requests.get(settings.API_DIR + 'users/' + username + '/').json()
+
+	if resp['ok']:
+		print("=============================")
+		print(resp)
+		curr_user = resp['info']
+		curr_pass = curr_user['password']
+
+		if hashers.check_password(pass_attempt, curr_pass):
+			# passwords match! create an authenticator
+			auth_response = requests.post(settings.API_DIR + 'authenticators/new/', data={"user_id":curr_user['pk']}).json()
+			return JsonResponse(auth_response)
+		else:
+			response_data = {}
+			response_data['ok'] = False
+			response_data['message'] = 'invalid password'
+			return JsonResponse(response_data)
+	return JsonResponse(resp)

@@ -9,6 +9,7 @@ urlpatterns = [
 	url(r'^api/v1/users/new/$', views.user_create, name='new_user'),
 	url(r'^api/v1/users/(?P<id>[0-9]+)/$', views.user_detail, name='user_detail'),
 	url(r'^api/v1/users/delete/(?P<id>[0-9]+)/$', views.user_delete, name='delete_user'),
+	url(r'^api/v1/users/(?P<username>[\w-]+)/$', views.user_from_name, name='user_from_name'),
 	# Listing CRUD
 	url(r'^api/v1/listings/$', views.listings, name='listings'),
 	url(r'^api/v1/listings/new/$', views.listing_create, name='new_listing'),
