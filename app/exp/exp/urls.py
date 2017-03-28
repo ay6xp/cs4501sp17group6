@@ -17,4 +17,5 @@ urlpatterns = [
     url(r'^api/v1/users/$', views.get_all_users, name='get_all_users'),
     url(r'^api/v1/users/(?P<id>[0-9]+)/$', views.get_user, name='get_user'),
     url(r'^api/v1/users/recently_joined/$', views.get_recently_joined_users, name='get_recently_joined_users'),
+    url(r'^api/v1/users/register/$', views.register, name='register'),
 ]

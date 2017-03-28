@@ -285,3 +285,11 @@ def get_recently_joined_users(request):
 
 	else:
 		return JsonResponse({'message': res['message']})
+
+def register(request):
+	username = request.POST.get('username', 'none')
+    password = request.POST.get('password', 'none')
+    email = request.POST.get('email', 'none')
+    phone_num = request.POST.get('phone_num', 'none')
+    user = requests.post(settings.API_DIR + 'users/register/', data = {'username': username, 'password': password, 'email': email, 'phone_num': phone_num}).json()
+	return JsonResponse(user, safe=False)
