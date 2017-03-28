@@ -70,22 +70,29 @@ def user_detail(request, id):
 def login(request):
     auth = request.COOKIES.get('auth')
     if auth:
-        return render(request, 'home/index.html', auth)
+        return HttpResponseRedirect(reverse('index'))
     if request.method == 'GET':
+        # return a blank form
         login_form = LoginForm()
         return render(request, 'home/login.html', {'form':login_form, 'auth':auth})
 
+    # else, a POST request was made
     f = LoginForm(request.POST)
     if not f.is_valid():
+        # invalid form
         login_form = LoginForm()
+        # show errors and take them back to the login page
         return render(request, 'home/login.html', {'errorMessage': "Please fill out all fields", 'form': login_form})
     username = f.cleaned_data['username']
     password = f.cleaned_data['password']
+    # submit request to exp layer
     response = requests.post(settings.API_DIR + 'login/', data={'username': username, 'password': password}).json()
-    if not response or not response['ok']:
-        # error occurred
+    if not response['ok']:
+        # an error occurred
         login_form = LoginForm()
+        # show errors and take them back to the login page
         return render(request, 'home/login.html', {'errorMessage': response['resp'], 'form': login_form})
+    # made it this far, so they can log in
     auth_token = response['resp']
     next = HttpResponseRedirect(reverse('index'))
     next.set_cookie('auth', auth_token)

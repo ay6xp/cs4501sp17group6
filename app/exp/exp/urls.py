@@ -4,7 +4,7 @@ from . import views
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-
+    url(r'^api/v1/login/', views.login, name='login'),
     url(r'^api/v1/index/$', views.index, name='index'),
     # listings
     url(r'^api/v1/listings/$', views.get_all_listings, name='get_all_listings'),
