@@ -82,7 +82,7 @@ def login(request):
     username = f.cleaned_data['username']
     password = f.cleaned_data['password']
     response = requests.post(settings.API_DIR + 'login/', data={'username': username, 'password': password}).json()
-    if response['ok'] == False:
+    if not response or not response['ok']:
         # error occurred
         login_form = LoginForm()
         return render(request, 'home/login.html', {'errorMessage': response['resp'], 'form': login_form})
@@ -90,6 +90,16 @@ def login(request):
     next = HttpResponseRedirect(reverse('index'))
     next.set_cookie('auth', auth_token)
     return next
+
+
+def logout(request):
+    auth = request.COOKIES.get('auth')
+    if not auth:
+        return HttpResponseRedirect(reverse('login'))
+    response = HttpResponseRedirect(reverse('index'))
+    response.delete_cookie("auth")
+    requests.post(settings.API_DIR + 'logout/', data={'auth': auth})
+    return response
 
 
 def register(request):
