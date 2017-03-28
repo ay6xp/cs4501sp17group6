@@ -202,6 +202,8 @@ def logout(request):
 
 def register(request):
     auth = request.COOKIES.get('auth')
+    if auth:
+        return HttpResponseRedirect(reverse('index'))
     # If we received a GET request instead of a POST request
     if request.method == 'GET':
         # display the login form page
