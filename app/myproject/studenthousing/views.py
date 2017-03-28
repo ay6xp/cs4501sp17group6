@@ -400,6 +400,34 @@ def user_delete(request, id):
 		response_data['message'] = 'this action only supports GET requests'
 		return JsonResponse(response_data)
 
+def auths(request):
+	# what type of HTTP request was made?
+	if request.method == 'GET':
+		# GET request
+
+		# are there authenticators to show?
+		auths = Authenticator.objects.all().values()
+		if auths.count() == 0:
+			# no, there are no authenticators
+			response_data = {}
+			response_data['ok'] = True
+			response_data['message'] = 'no authenticators exist at this time'
+			return JsonResponse(response_data)
+
+		else:
+			# yes, there are authenticators
+			response_data = {}
+			response_data['ok'] = True
+			response_data['info'] = list(auths)
+			return JsonResponse(response_data)
+
+	else:
+		# POST (or other) request
+		response_data = {}
+		response_data['ok'] = False
+		response_data['message'] = 'this action only supports GET requests'
+		return JsonResponse(response_data)
+
 #
 #	"create" functionality of Authenticator CRUD
 #
