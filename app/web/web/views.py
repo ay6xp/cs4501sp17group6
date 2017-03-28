@@ -165,6 +165,7 @@ def login(request):
         # invalid form
         login_form = LoginForm()
         # show errors and take them back to the login page
+        messages.add_message(request, messages.INFO, "Please fill out all fields.")
         return render(request, 'home/login.html', {'errorMessage': "Please fill out all fields", 'form': login_form})
     username = f.cleaned_data['username']
     password = f.cleaned_data['password']
@@ -176,6 +177,7 @@ def login(request):
         # an error occurred
         login_form = LoginForm()
         # show errors and take them back to the login page
+        messages.add_message(request, messages.INFO, response['message'])
         return render(request, 'home/login.html', {'errorMessage': response['message'], 'form': login_form})
     # made it this far, so they can log in
     auth_token = response['info']
