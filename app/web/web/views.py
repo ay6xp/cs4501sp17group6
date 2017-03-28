@@ -134,8 +134,12 @@ def register(request):
     # Check if the experience layer said they gave us incorrect information
     if not response['ok']:
         # Couldn't log them in, send them back to login page with error
-        messages.add_message(request, messages.INFO, response['message'])
+        if response['message'] == 'db error':
+            messages.add_message(request, messages.INFO, 'Something went wrong. Please fill out the registration form again.')
+        else:
+            messages.add_message(request, messages.INFO, response['message'])
         return render(request, 'home/register.html', {'msg': "Invalid signup", 'form': RegisterForm})
 
+    messages.add_message(request, messages.INFO, response['message'])
     return HttpResponseRedirect(next)
 
