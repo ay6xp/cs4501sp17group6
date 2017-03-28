@@ -142,39 +142,9 @@ class UserTests(TestCase):
         response = self.client.get(reverse('delete_user', args=[1]))
         self.assertContains(response, 'successfully deleted')
 
-    def test_user_from_name(self):
-        pass
-
 
 # to test with empty database
 class UserTestEmpty(TestCase):
     def test_show_nonexistent_user(self):
         response = self.client.get(reverse('user_detail', kwargs={'id': 757}))
         self.assertContains(response, 'no user exists')
-
-
-class AuthTests(TestCase):
-    fixtures = ['db_init.json']
-
-    def test_auth_create(self):
-        pass
-
-    def test_auth_create(self):
-        response = self.client.post(reverse('auth_create', kwargs={'id': 973}))
-        self.assertContains(response, 'successfully created')
-
-    def test_get_auth(self):
-        # authenticator = hmac.new(
-        #        key = settings.SECRET_KEY.encode('utf-8'),
-        #        msg = os.urandom(32),
-        #        digestmod = 'sha256',
-        #   	).hexdigest()
-        # response = self.client.get(reverse('get_auth', kwargs={'auth_token':authenticator}))
-        # self.assertContains(response, 'this authenticator exists')
-        pass
-
-    def test_get_auth_user(self):
-        pass
-
-    def test_auth_delete(self):
-        pass
