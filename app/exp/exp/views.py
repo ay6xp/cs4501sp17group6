@@ -195,7 +195,14 @@ def new_listing(request, auth):
     images = request.POST.get('images', 'default')
     gym = request.POST.get('gym', 'default')
     maintenance = request.POST.get('maintenance', 'default')
-    auth = request.POST.get('auth', 'none')
+    try:
+        auth = request.POST.get('auth')
+    except:
+        response_data = {}
+        response_data['ok'] = False
+        response_data['message'] = 'unauthenticated user'
+        return JsonResponse(response_data)
+        
     # get authenticated user's id
     response = requests.get(settings.API_DIR + 'get_auth_user/').json()
     if not response['ok']:
