@@ -277,6 +277,12 @@ def get_recently_joined_users(request):
 		return JsonResponse({'info': recent_list})
 	return JsonResponse({'message': res['message']})
 
+
+def logout(request):
+	auth = request.POST.get('auth', 'default')
+	response = requests.post(settings.API_DIR, data={'auth':auth}).json()
+	return JsonResponse(response)
+
 def register(request):
 	username = request.POST.get('username', 'none')
 	password = request.POST.get('password', 'none')
