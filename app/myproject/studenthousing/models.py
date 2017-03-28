@@ -14,7 +14,7 @@ class User(models.Model):
 class Authenticator(models.Model):
     # attributes
     authenticator = models.CharField(primary_key=True, max_length=64)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    user_id = models.CharField(max_length=7)
     date_created = models.DateTimeField(auto_now_add=True)
 
 class Listing(models.Model):

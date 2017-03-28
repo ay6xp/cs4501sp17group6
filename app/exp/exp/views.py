@@ -165,7 +165,7 @@ def get_recently_posted_listings(request):
         return JsonResponse({'message': res['message']})
 
 
-def new_listing(request, auth):
+def new_listing(request):
     title = request.POST.get('title', 'default')
     address = request.POST.get('address', 'default')
     residence_type = request.POST.get('residence_type', 'default')
@@ -202,7 +202,7 @@ def new_listing(request, auth):
         response_data['ok'] = False
         response_data['message'] = 'unauthenticated user'
         return JsonResponse(response_data)
-        
+
     # get authenticated user's id
     response = requests.get(settings.API_DIR + 'get_auth_user/').json()
     if not response['ok']:

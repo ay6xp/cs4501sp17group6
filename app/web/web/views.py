@@ -170,13 +170,15 @@ def login(request):
     password = f.cleaned_data['password']
     # submit request to exp layer
     response = requests.post(settings.API_DIR + 'login/', data={'username': username, 'password': password}).json()
+    print("==============++++++++++++++++++===========")
+    print(response)
     if not response['ok']:
         # an error occurred
         login_form = LoginForm()
         # show errors and take them back to the login page
-        return render(request, 'home/login.html', {'errorMessage': response['resp'], 'form': login_form})
+        return render(request, 'home/login.html', {'errorMessage': response['message'], 'form': login_form})
     # made it this far, so they can log in
-    auth_token = response['resp']
+    auth_token = response['info']
     next = HttpResponseRedirect(reverse('index'))
     next.set_cookie('auth', auth_token)
     return next

@@ -16,6 +16,7 @@
   		<div class="row">
         <form method="post" action="{% url 'new_listing' %}">
           <div class="col-sm-12">
+            {% csrf_token %}
             {{ form.as_p }}
           </div>
           <div class="col-sm-12">

@@ -350,7 +350,7 @@ def user_from_name(request, username):
 			# yes, user exists, so we can return their information
 			curr_user = User.objects.all().get(username=username)
 			data = {
-			'username': curr_user.username, 'password': curr_user.password, 'email': curr_user.email, 'phone_num': curr_user.phone_num, 'date_joined': curr_user.date_joined, 'pk': curr_user.pk
+			'username': curr_user.username, 'password': curr_user.password, 'email': curr_user.email, 'phone_num': curr_user.phone_num, 'joined_date': curr_user.joined_date, 'pk': curr_user.pk
 			}
 			response_data = {}
 			response_data['ok'] = True
@@ -458,7 +458,7 @@ def auth_create(request):
 				response_data = {}
 				response_data['ok'] = True
 				response_data['message'] = 'authenticator for user %s successfully created' % u_id
-				response_data['info'] = auth_token
+				response_data['info'] = {'auth_token':auth_token, 'user_id':u_id}
 				return JsonResponse(response_data)
 
 		else:
