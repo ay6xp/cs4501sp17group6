@@ -288,7 +288,7 @@ def get_recently_joined_users(request):
 
 def logout(request):
     auth = request.POST.get('auth', 'default')
-    response = requests.post(settings.API_DIR, data={'auth': auth}).json()
+    response = requests.post(settings.API_DIR + 'authenticators/delete/', data={'auth': auth}).json()
     return JsonResponse(response)
 
 

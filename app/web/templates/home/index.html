@@ -8,6 +8,14 @@
   <div class="jumbotron">
       <h1 style="text-align: center">Welcome to Student Housing!</h1>
   </div>
+
+  {% if messages %}
+    <ul class="messages" style="list-style-type: none;">
+        {% for message in messages %}
+          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+  {% endif %}
   
   <div class="content container">
     <div class="row">

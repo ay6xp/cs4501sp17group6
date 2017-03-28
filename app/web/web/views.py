@@ -15,7 +15,6 @@ from django.contrib import messages
 
 def index(request):
     req = requests.get(settings.API_DIR + 'index/').json()
-
     return render(request, 'home/index.html', req)
 
 
@@ -96,6 +95,7 @@ def login(request):
 def logout(request):
     auth = request.COOKIES.get('auth')
     if not auth:
+        messages.add_message(request, messages.INFO, "You are not currently logged in.")
         return HttpResponseRedirect(reverse('login'))
     response = HttpResponseRedirect(reverse('index'))
     response.delete_cookie("auth")
