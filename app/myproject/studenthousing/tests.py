@@ -2,6 +2,9 @@ from django.test import TestCase
 from django.core.urlresolvers import reverse
 from .models import Listing, User
 import json
+import os
+import hmac
+from django.conf import settings
 
 class ListingTestPopulated(TestCase):
 
@@ -154,10 +157,17 @@ class AuthTests(TestCase):
 	fixtures = ['db_init.json']
 
 	def test_auth_create(self):
-		pass
+		response = self.client.post(reverse('auth_create', kwargs={'id':973}))
+		self.assertContains(response, 'successfully created')
 	
 	def test_get_auth(self):
-		pass
+		# authenticator = hmac.new(
+	 #        key = settings.SECRET_KEY.encode('utf-8'),
+	 #        msg = os.urandom(32),
+	 #        digestmod = 'sha256',
+  #   	).hexdigest()
+		# response = self.client.get(reverse('get_auth', kwargs={'auth_token':authenticator}))
+		# self.assertContains(response, 'this authenticator exists')
 
 	def test_get_auth_user(self):
 		pass
