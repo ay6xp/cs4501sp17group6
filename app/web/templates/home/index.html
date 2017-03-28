@@ -1,107 +1,107 @@
 {% extends 'base.html' %}
 
-{% block title %} 
-  Home 
+{% block title %}
+    Home
 {% endblock %}
 
 {% block content %}
-  <div class="jumbotron">
-      <h1 style="text-align: center">Welcome to Student Housing!</h1>
-  </div>
-
-  {% if messages %}
-    <ul class="messages" style="list-style-type: none;">
-        {% for message in messages %}
-          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </ul>
-  {% endif %}
-  
-  <div class="content container">
-    <div class="row">
-      <div class="col-md-4">
-        <h2>All Listings</h2>
-        <ul>
-          {% for listing in all_listings %}
-            {% if forloop.counter0 < 5 %}
-              <li><a href="listings/{{ listing.id }}/">{{ listing.title }}</a></li>
-            {% endif %}
-          {% endfor %}
-        </ul>
-        {% if not all_listings %}
-          <p>Sorry, no listings are available at this time.</p>
-        {% else %}
-          <p><a href="listings/">View all listings >></a></p>
-        {% endif %}
-      </div>
-
-      <div class="col-md-4">
-        <h2>New Listings</h2>
-        <ul>
-          {% for listing in recent_listings %}
-            {% if forloop.counter0 < 5 %}
-              <li><a href="listings/{{ listing.id }}/">{{ listing.title }}</a></li>
-            {% endif %}
-          {% endfor %}
-        </ul>
-        {% if not recent_listings %}
-          <p>No listings have been posted recently.</p>
-        {% else %}
-          <p><a href="listings/recently_posted/">View all new listings >></a></p>
-        {% endif %}
-      </div>
-
-      <div class="col-md-4">
-      <h2>Expiring Soon</h2>
-        <ul>
-          {% for listing in exp_soon_listings %}
-            {% if forloop.counter0 < 5 %}
-              <li><a href="{{ listing.id }}/">{{ listing.title }}</a></li>
-            {% endif %}
-          {% endfor %}
-        </ul>
-        {% if not exp_soon_listings %}
-          <p>No listings expire within the next three days.</p>
-        {% else %}
-          <p><a href="listings/expiring_soon/">View all listings expiring soon >></a></p>
-        {% endif %}
-      </div>
+    <div class="jumbotron">
+        <h1 style="text-align: center">Welcome to Student Housing!</h1>
     </div>
 
-    <br>
-
-    <div class="row">
-      <div class="col-md-4 col-md-offset-2">
-        <h2>All Users</h2>
-        <ul>
-          {% for user in all_users %}
-            {% if forloop.counter0 < 5 %}
-              <li><a href="users/{{ user.id }}/">{{ user.username }}</a></li>
-            {% endif %}
-          {% endfor %}
+    {% if messages %}
+        <ul class="messages" style="list-style-type: none;">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
         </ul>
-        {% if not all_users %}
-          <p>No users are registered at this time.</p>
-        {% else %}
-          <p><a href="users/">View all users >></a></p>
-        {% endif %}
-      </div>
+    {% endif %}
 
-      <div class="col-md-4">
-        <h2>New Users</h2>
-        <ul>
-          {% for user in recent_users %}
-            {% if forloop.counter0 < 5 %}
-              <li><a href="users/{{ user.id }}/">{{ user.username }}</a></li>
-            {% endif %}
-          {% endfor %}
-        </ul>
-        {% if not recent_users %}
-          <p>No users have joined recently.</p>
-        {% else %}
-          <p><a href="users/recently_joined/">View all new users >></a></p>
-        {% endif %}
-      </div>
+    <div class="content container">
+        <div class="row">
+            <div class="col-md-4">
+                <h2>All Listings</h2>
+                <ul>
+                    {% for listing in all_listings %}
+                        {% if forloop.counter0 < 5 %}
+                            <li><a href="listings/{{ listing.id }}/">{{ listing.title }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+                {% if not all_listings %}
+                    <p>Sorry, no listings are available at this time.</p>
+                {% else %}
+                    <p><a href="listings/">View all listings >></a></p>
+                {% endif %}
+            </div>
+
+            <div class="col-md-4">
+                <h2>New Listings</h2>
+                <ul>
+                    {% for listing in recent_listings %}
+                        {% if forloop.counter0 < 5 %}
+                            <li><a href="listings/{{ listing.id }}/">{{ listing.title }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+                {% if not recent_listings %}
+                    <p>No listings have been posted recently.</p>
+                {% else %}
+                    <p><a href="listings/recently_posted/">View all new listings >></a></p>
+                {% endif %}
+            </div>
+
+            <div class="col-md-4">
+                <h2>Expiring Soon</h2>
+                <ul>
+                    {% for listing in exp_soon_listings %}
+                        {% if forloop.counter0 < 5 %}
+                            <li><a href="{{ listing.id }}/">{{ listing.title }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+                {% if not exp_soon_listings %}
+                    <p>No listings expire within the next three days.</p>
+                {% else %}
+                    <p><a href="listings/expiring_soon/">View all listings expiring soon >></a></p>
+                {% endif %}
+            </div>
+        </div>
+
+        <br>
+
+        <div class="row">
+            <div class="col-md-4 col-md-offset-2">
+                <h2>All Users</h2>
+                <ul>
+                    {% for user in all_users %}
+                        {% if forloop.counter0 < 5 %}
+                            <li><a href="users/{{ user.id }}/">{{ user.username }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+                {% if not all_users %}
+                    <p>No users are registered at this time.</p>
+                {% else %}
+                    <p><a href="users/">View all users >></a></p>
+                {% endif %}
+            </div>
+
+            <div class="col-md-4">
+                <h2>New Users</h2>
+                <ul>
+                    {% for user in recent_users %}
+                        {% if forloop.counter0 < 5 %}
+                            <li><a href="users/{{ user.id }}/">{{ user.username }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+                {% if not recent_users %}
+                    <p>No users have joined recently.</p>
+                {% else %}
+                    <p><a href="users/recently_joined/">View all new users >></a></p>
+                {% endif %}
+            </div>
+        </div>
     </div>
-  </div>
 {% endblock %}

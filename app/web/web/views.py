@@ -45,6 +45,7 @@ def listing_detail(request, id):
     else:
         return render(request, 'home/error.html', {'msg': 'Listing with ID %s does not exist.' % id})
 
+
 def new_listing(request):
     auth = request.COOKIES.get('auth')
     if not auth:
@@ -57,7 +58,8 @@ def new_listing(request):
         form = ListingForm(request.POST)
         if not form.is_valid():
             form = ListingForm()
-            return render(request, 'home/new_listing.html', {'form': form, 'auth': auth, 'msg': 'Invalid information provided.'})
+            return render(request, 'home/new_listing.html',
+                          {'form': form, 'auth': auth, 'msg': 'Invalid information provided.'})
 
         # get clean info
         title = form.cleaned_data['title']
@@ -92,39 +94,39 @@ def new_listing(request):
         maintenance = form.cleaned_data['maintenance']
 
         response = requests.post(settings.API_DIR + 'listings/new/', data={
-            'title':title,
-            'address':address,
-            'residence_type':residence_type,
-            'num_of_bedrooms':num_of_bedrooms,
-            'num_of_bathrooms':num_of_bathrooms,
-            'price':price,
-            'sqft':sqft,
-            'lot_size':lot_size,
-            'max_occupancy':max_occupancy,
-            'availability_start':availability_start,
-            'availability_end':availability_end,
-            'availability_status':availability_status,
-            'description':description,
-            'post_expiration_date':post_expiration_date,
-            'laundry':laundry,
-            'parking':parking,
-            'pet_friendly':pet_friendly,
-            'smoking':smoking,
-            'water':water,
-            'gas':gas,
-            'power':power,
-            'wifi':wifi,
-            'wheelchair_access':wheelchair_access,
-            'furnished':furnished,
-            'balcony':balcony,
-            'yard':yard,
-            'images':images,
-            'gym':gym,
-            'maintenance':maintenance
+            'title': title,
+            'address': address,
+            'residence_type': residence_type,
+            'num_of_bedrooms': num_of_bedrooms,
+            'num_of_bathrooms': num_of_bathrooms,
+            'price': price,
+            'sqft': sqft,
+            'lot_size': lot_size,
+            'max_occupancy': max_occupancy,
+            'availability_start': availability_start,
+            'availability_end': availability_end,
+            'availability_status': availability_status,
+            'description': description,
+            'post_expiration_date': post_expiration_date,
+            'laundry': laundry,
+            'parking': parking,
+            'pet_friendly': pet_friendly,
+            'smoking': smoking,
+            'water': water,
+            'gas': gas,
+            'power': power,
+            'wifi': wifi,
+            'wheelchair_access': wheelchair_access,
+            'furnished': furnished,
+            'balcony': balcony,
+            'yard': yard,
+            'images': images,
+            'gym': gym,
+            'maintenance': maintenance
         }).json()
 
         if not response['ok']:
-            return render(request, 'home/new_listing.html', {'msg': response['message'], 'form':form, 'auth':auth})
+            return render(request, 'home/new_listing.html', {'msg': response['message'], 'form': form, 'auth': auth})
         response = HttpResponseRedirect('/')
         return response
 
@@ -150,6 +152,7 @@ def user_detail(request, id):
     else:
         return render(request, 'home/error.html', {'msg': 'User with ID %s does not exist.' % id})
 
+
 def login(request):
     auth = request.COOKIES.get('auth')
     if auth:
@@ -157,7 +160,7 @@ def login(request):
     if request.method == 'GET':
         # return a blank form
         login_form = LoginForm()
-        return render(request, 'home/login.html', {'form':login_form, 'auth':auth})
+        return render(request, 'home/login.html', {'form': login_form, 'auth': auth})
 
     # else, a POST request was made
     f = LoginForm(request.POST)
@@ -200,7 +203,7 @@ def register(request):
     auth = request.COOKIES.get('auth')
     # If we received a GET request instead of a POST request
     if request.method == 'GET':
-    # display the login form page
+        # display the login form page
         register_form = RegisterForm()
         return render(request, 'home/register.html', {'form': register_form, 'auth': auth})
 
@@ -211,7 +214,8 @@ def register(request):
     if not f.is_valid():
         form = RegisterForm()
         # Form was bad -- send them back to login page and show them an error
-        return render(request, 'home/register.html', {'msg': "Please fill out the registration form again.", 'form': form, 'auth': auth})
+        return render(request, 'home/register.html',
+                      {'msg': "Please fill out the registration form again.", 'form': form, 'auth': auth})
 
     # Sanitize fields
     username = f.cleaned_data['username']
@@ -219,7 +223,9 @@ def register(request):
     email = f.cleaned_data['email']
     phone_num = f.cleaned_data['phone_num']
 
-    response = requests.post(settings.API_DIR + 'users/register/', data={'username': username, 'password': password, 'email': email, 'phone_num': phone_num}).json()
+    response = requests.post(settings.API_DIR + 'users/register/',
+                             data={'username': username, 'password': password, 'email': email,
+                                   'phone_num': phone_num}).json()
 
     # Get next page
     next = reverse('login')
@@ -227,11 +233,11 @@ def register(request):
     if not response['ok']:
         # Couldn't log them in, send them back to login page with error
         if response['message'] == 'db error':
-            messages.add_message(request, messages.INFO, 'Something went wrong. Please fill out the registration form again.')
+            messages.add_message(request, messages.INFO,
+                                 'Something went wrong. Please fill out the registration form again.')
         else:
             messages.add_message(request, messages.INFO, response['message'])
         return render(request, 'home/register.html', {'msg': "Invalid signup", 'form': RegisterForm})
 
     messages.add_message(request, messages.INFO, response['message'])
     return HttpResponseRedirect(next)
-
