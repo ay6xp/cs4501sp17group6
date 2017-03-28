@@ -11,7 +11,7 @@ urlpatterns = [
     url(r'^api/v1/listings/$', views.get_all_listings, name='get_all_listings'),
     url(r'^api/v1/listings/(?P<id>[0-9]+)/$', views.get_listing, name='get_listing'),
     url(r'^api/v1/listings/expiring_soon/$', views.get_expiring_soon_listings, name='get_expiring_soon_listings'),
-    url(r'^api/v1/listings/recently_posted/$', views.get_recently_posted_listings, name='get_recently_posted_listings'), 
+    url(r'^api/v1/listings/recently_posted/$', views.get_recently_posted_listings, name='get_recently_posted_listings'),
     url(r'^api/v1/listings/new/$', views.new_listing, name='new_listing'),
 
     # users

@@ -1,26 +1,26 @@
 {% extends 'base.html' %}
 
-{% block title %} 
-  Listings 
+{% block title %}
+    Listings
 {% endblock %}
 
 {% block content %}
-  <div class="jumbotron">
-      <h1 style="text-align: center">Welcome to Student Housing!</h1>
-  </div>
-  
-  <div class="content container">
-    <div class="row">
-      <h1>Listings: </h1>
-       {% if all_listings %}
-       <ul>
-         {% for listing in all_listings %}
-         <li><a href="{{ listing.id }}/">{{ listing.title }}</a></li>
-         {% endfor %}
-       </ul>
-       {% else %}
-         <h3>No current listings.</h3>
-       {% endif %}
+    <div class="jumbotron">
+        <h1 style="text-align: center">Welcome to Student Housing!</h1>
     </div>
-  </div>
+
+    <div class="content container">
+        <div class="row">
+            <h1>Listings: </h1>
+            {% if all_listings %}
+                <ul>
+                    {% for listing in all_listings %}
+                        <li><a href="{{ listing.id }}/">{{ listing.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <h3>No current listings.</h3>
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}
