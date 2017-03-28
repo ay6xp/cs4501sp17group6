@@ -100,6 +100,7 @@ def logout(request):
     response = HttpResponseRedirect(reverse('index'))
     response.delete_cookie("auth")
     requests.post(settings.API_DIR + 'logout/', data={'auth': auth})
+    messages.add_message(request, messages.INFO, "You have been logged out successfully.")
     return response
 
 

@@ -1,32 +1,71 @@
 {% extends 'base.html' %}
 
-{% block title %} 
-  Login
+{% block title %}
+    Login
 {% endblock %}
 
 {% block content %}
-  <div class="jumbotron">
-  	<h1 style="text-align: center">Welcome to Student Housing!</h1>
-  </div>
+    <div class="jumbotron">
+        <h1 style="text-align: center">Welcome to Student Housing!</h1>
+    </div>
 
-  {% if form.errors %}
-  	<div class="alert alert-warning" role="alert">Your username and password didn't match. Please try again.</div>
-  {% endif %}
-  
-  <div class="form-center-small">
-  	<h1>Login</h1>
-  	<div class="col-lg-12 well">
-  		<div class="row">
-        <form method="post" action="{% url 'login' %}">
-          <div class="col-sm-12">
-            {% csrf_token %} 
-            {{ form.as_p }}
-          </div>
-          <div class="col-sm-12">
-            <input type="submit" value="Login" class="btn btn-info"/>
-          </div>
-        </form>
-  		</div>
-  	</div>
-  </div>
+    {% if messages %}
+        <ul class="messages" style="list-style-type: none;">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if form.errors %}
+        <div class="alert alert-warning" role="alert">Your username and password didn't match. Please try again.</div>
+    {% endif %}
+
+    <div class="form-center-small">
+        <h1>Login</h1>
+        <div class="col-lg-12 well">
+            <div class="row">
+                <form method="post" action="{% url 'login' %}">
+                    <div class="col-sm-12">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                    </div>
+                    <div class="col-sm-12">
+                        <input type="submit" value="Login" class="btn btn-info"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock %}
+
+{#{% extends 'base.html' %}#}
+{##}
+{#{% block title %}#}
+{#    Login#}
+{#{% endblock %}#}
+{##}
+{#{% block content %}#}
+{##}
+{#    {% if form.errors %}#}
+{#        <p>Invalid username and/or password. Please try again.</p>#}
+{#        <h1>Login</h1>#}
+{#        <form action="{% url 'login' %}" method="post" class="form">#}
+{#            {% csrf_token %}#}
+{#            {{ form.as_p }}#}
+{#            <button type="submit" class="btn btn-primary">Login</button>#}
+{#        </form>#}
+{#    {% endif %}#}
+{##}
+{#    {% if user.is_authenticated %}#}
+{#        <p>You are already logged in.</p>#}
+{#    {% else %}#}
+{#        <h1>Login</h1>#}
+{#        <form action="{% url 'login' %}" method="post" class="form">#}
+{#            {% csrf_token %}#}
+{#            {{ form.as_p }}#}
+{#            <button type="submit" class="btn btn-primary">Login</button>#}
+{#        </form>#}
+{#    {% endif %}#}
+{##}
+{#{% endblock %}#}
