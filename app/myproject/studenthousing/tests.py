@@ -159,19 +159,19 @@ class AuthTests(TestCase):
     def test_auth_create(self):
         pass
 
-        def test_auth_create(self):
-            response = self.client.post(reverse('auth_create', kwargs={'id': 973}))
-            self.assertContains(response, 'successfully created')
+    def test_auth_create(self):
+        response = self.client.post(reverse('auth_create', kwargs={'id': 973}))
+        self.assertContains(response, 'successfully created')
 
-        def test_get_auth(self):
-            # authenticator = hmac.new(
-            #        key = settings.SECRET_KEY.encode('utf-8'),
-            #        msg = os.urandom(32),
-            #        digestmod = 'sha256',
-            #   	).hexdigest()
-            # response = self.client.get(reverse('get_auth', kwargs={'auth_token':authenticator}))
-            # self.assertContains(response, 'this authenticator exists')
-            pass
+    def test_get_auth(self):
+        # authenticator = hmac.new(
+        #        key = settings.SECRET_KEY.encode('utf-8'),
+        #        msg = os.urandom(32),
+        #        digestmod = 'sha256',
+        #   	).hexdigest()
+        # response = self.client.get(reverse('get_auth', kwargs={'auth_token':authenticator}))
+        # self.assertContains(response, 'this authenticator exists')
+        pass
 
     def test_get_auth_user(self):
         pass
