@@ -73,11 +73,29 @@ def index(request):
             # this is not one we should return in this view
             pass
 
-    return JsonResponse({'all_listings': listings_res['info'],
-                         'all_users': users_res['info'],
-                         'exp_soon_listings': exp_soon_list,
-                         'recent_listings': l_recent_list,
-                         'recent_users': u_recent_list})
+    #
+    # use this opportunity to delete expired authenticators
+    # since the home page will get frequent traffic
+    #
+    auths_res = requests.get(settings.API_DIR + 'authenticators/').json()
+
+    # check to see if each post's expiration date is within 3 days of now
+    for i in range(len(auths_res['info'])):
+        # get string representation of auth's date
+        created_str_dt = auths_res['info'][i]['date_created']
+        created_str_d = created_str_dt[:-14]
+        # convert into date object
+        created_date = datetime.strptime(created_str_d, '%Y-%m-%d').date()
+
+        # check dates
+        if created_date <= datetime.now().date() - timedelta(days=2):
+            # this is one we should delete
+            requests.post(settings.API_DIR + 'authenticators/delete/', data={'auth_token':auths_res['info'][i]['authenticator']})
+        else:
+            # this is not one we should delete
+            pass
+
+    return JsonResponse({'all_listings': listings_res['info'], 'all_users': users_res['info'], 'exp_soon_listings': exp_soon_list, 'recent_listings': l_recent_list, 'recent_users': u_recent_list})
 
 
 #
@@ -208,7 +226,6 @@ def new_listing(request):
     if not response['ok']:
         return JsonResponse(response)
     else:
-        print('woohoo from line 213')
         user = response['info']
         resp = requests.post(settings.API_DIR + 'listings/new/', data={
             'title': title,
@@ -316,8 +333,6 @@ def login(request):
 	resp = requests.get(settings.API_DIR + 'users/' + username + '/').json()
 
 	if resp['ok']:
-		print("=============================")
-		print(resp)
 		curr_user = resp['info']
 		curr_pass = curr_user['password']
 
