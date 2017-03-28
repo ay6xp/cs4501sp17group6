@@ -23,15 +23,19 @@
             <a class="navbar-brand" href="/home/"><span class="glyphicon glyphicon-home"></span> Student Housing</a>
         </div>
         <div class="collapse navbar-collapse">
+            {% if not request.COOKIES.auth %}
             <p class="navbar-text navbar-right">
                 <a href="{% url 'register' %}"><span class="glyphicon glyphicon-plus"></span>Register</a>
             </p>
             <p class="navbar-text navbar-right">
-                <a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
-            </p>
-            <p class="navbar-text navbar-right">
                 <a href="{% url 'login' %}"><span class="glyphicon glyphicon-log-in"></span> Login</a>
             </p>
+            {% else %}
+            <p class="navbar-text navbar-right">
+                <span>You are logged in.</span>
+                <a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
+            </p>
+            {% endif %}
         </div>
     </div>
 </nav>
