@@ -142,5 +142,13 @@
   	    	"maintenance": false,
           "user": 1
     	}
-	}
+	},
+  {
+    "model": "studenthousing.Authenticator",
+      "fields": {
+        "authenticator": "4be2766bb86c9df1a0b86f0667bd6d39b0b6c67bfcd26cbe362cc0e5dcdaaf25",
+        "user_id": "1",
+        "date_created": "2017-03-28T04:15:26.829Z"
+      }
+  }
 ]
