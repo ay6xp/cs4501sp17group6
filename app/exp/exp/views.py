@@ -159,6 +159,82 @@ def get_recently_posted_listings(request):
 	else:
 		return JsonResponse({'message': res['message']})
 
+def new_listing(request, auth):
+	title = request.POST.get('title', 'default')
+	address = request.POST.get('address', 'default')
+	residence_type = request.POST.get('residence_type', 'default')
+	num_of_bedrooms = request.POST.get('num_of_bedrooms', 'default')
+	num_of_bathrooms = request.POST.get('num_of_bathrooms', 'default')
+	price = request.POST.get('price', 'default')
+	sqft = request.POST.get('sqft', 'default')
+	lot_size = request.POST.get('lot_size', 'default')
+	max_occupancy = request.POST.get('max_occupancy', 'default')
+	availability_start = request.POST.get('availability_start', 'default')
+	availability_end = request.POST.get('availability_end', 'default')
+	availability_status = request.POST.get('availability_status', 'default')
+	description = request.POST.get('description', 'default')
+	post_expiration_date = request.POST.get('post_expiration_date', 'default')
+
+	laundry = request.POST.get('laundry', 'default')
+	parking = request.POST.get('parking', 'default')
+	pet_friendly = request.POST.get('pet_friendly', 'default')
+	smoking = request.POST.get('smoking', 'default')
+	water = request.POST.get('water', 'default')
+	gas = request.POST.get('gas', 'default')
+	power = request.POST.get('power', 'default')
+	wifi = request.POST.get('wifi', 'default')
+	wheelchair_access = request.POST.get('wheelchair_access', 'default')
+	furnished = request.POST.get('furnished', 'default')
+	balcony = request.POST.get('balcony', 'default')
+	yard = request.POST.get('yard', 'default')
+	images = request.POST.get('images', 'default')
+	gym = request.POST.get('gym', 'default')
+	maintenance = request.POST.get('maintenance', 'default')
+
+	auth = request.POST.get('auth', 'none')
+
+    # get authenticated user's id
+    response = requests.get(settings.API_DIR + 'get_auth_user/').json()
+    if not response['ok']:
+    	return JsonResponse(response)
+    else:
+    	user = response['info']
+    	resp = requests.post(settings.API_DIR + 'listing_create/', data={
+    		'title':title,
+    		'address':address,
+    		'residence_type':residence_type,
+    		'num_of_bedrooms':num_of_bedrooms,
+    		'num_of_bathrooms':num_of_bathrooms,
+    		'price':price,
+    		'sqft':sqft,
+    		'lot_size':lot_size,
+    		'max_occupancy':max_occupancy,
+    		'availability_start':availability_start,
+    		'availability_end':availability_end,
+    		'availability_status':availability_status,
+    		'description':description,
+    		'post_expiration_date':post_expiration_date,
+    		'laundry':laundry,
+    		'parking':parking,
+    		'pet_friendly':pet_friendly,
+    		'smoking':smoking,
+    		'water':water,
+    		'gas':gas,
+    		'power':power,
+    		'wifi':wifi,
+    		'wheelchair_access':wheelchair_access,
+    		'furnished':furnished,
+    		'balcony':balcony,
+    		'yard':yard,
+    		'images':images,
+    		'gym':gym,
+    		'maintenance':maintenance,
+    		'user':user
+    	}).json()
+
+    	return JsonResponse(resp)
+
+
 
 #
 #	Users

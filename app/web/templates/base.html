@@ -23,12 +23,14 @@
         </div>
         <div class="collapse navbar-collapse">
           <p class="navbar-text navbar-right">
-            <span class="glyphicon glyphicon-plus"></span>
-            Register button to-do
+            <a href="{% url 'register' %}"><span class="glyphicon glyphicon-plus"></span>
+            Register
+            </a>
           </p>
           <p class="navbar-text navbar-right">
-            <span class="glyphicon glyphicon-user"></span>
-            Login button to-do
+            <a href="{% url 'login' %}"><span class="glyphicon glyphicon-user"></span>
+            Login
+            </a>
           </p>
         </div>
       </div>

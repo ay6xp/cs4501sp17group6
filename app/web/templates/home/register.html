@@ -10,6 +10,9 @@
     <p>You are already logged in.</p>
   {% else %}
     <h2>Register</h2>
+    {% if msg %}
+    <p>{{ msg }}</p>
+    {% endif %}
   	<form action="{% url 'register' %}" method="post" class="form">
       {% csrf_token %}
       {{ form.as_p }}   
