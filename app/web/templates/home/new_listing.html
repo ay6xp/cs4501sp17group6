@@ -1,29 +1,29 @@
 {% extends 'base.html' %}
 
-{% block title %} 
-  New Listing
+{% block title %}
+    New Listing
 {% endblock %}
 
 {% block content %}
 
-  {% if form.errors %}
-  	<div class="alert alert-warning" role="alert">Uh oh!</div>
-  {% endif %}
-  
-  <div class="form-center-small">
-  	<h1>New Listing</h1>
-  	<div class="col-lg-12 well">
-  		<div class="row">
-        <form method="post" action="{% url 'new_listing' %}">
-          <div class="col-sm-12">
-            {% csrf_token %}
-            {{ form.as_p }}
-          </div>
-          <div class="col-sm-12">
-            <input type="submit" value="Submit" class="btn btn-info"/>
-          </div>
-        </form>
-  		</div>
-  	</div>
-  </div>
+    {% if form.errors %}
+        <div class="alert alert-warning" role="alert">Uh oh!</div>
+    {% endif %}
+
+    <div class="form-center-small">
+        <h1>New Listing</h1>
+        <div class="col-lg-12 well">
+            <div class="row">
+                <form method="post" action="{% url 'new_listing' %}">
+                    <div class="col-sm-12">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                    </div>
+                    <div class="col-sm-12">
+                        <input type="submit" value="Submit" class="btn btn-info"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock %}

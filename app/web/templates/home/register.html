@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-  Register
+    Register
 {% endblock %}
 
 {% block content %}
@@ -14,20 +14,20 @@
         </ul>
     {% endif %}
 
-  {% if form.errors %}
-    <p>Your username and password didn't match. Please try again.</p>
-  {% endif %}
+    {% if form.errors %}
+        <p>Your username and password didn't match. Please try again.</p>
+    {% endif %}
 
-  {% if user.is_authenticated %}
-    <p>You are already logged in.</p>
-  {% else %}
-    <h1>Register</h1>
-    <form action="{% url 'register' %}" method="post" class="form">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit" class="btn btn-primary">Register</button>
-    </form>
-  {% endif %}
+    {% if user.is_authenticated %}
+        <p>You are already logged in.</p>
+    {% else %}
+        <h1>Register</h1>
+        <form action="{% url 'register' %}" method="post" class="form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+    {% endif %}
 
 
 {% endblock %}

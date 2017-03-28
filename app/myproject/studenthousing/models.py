@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class User(models.Model):
     # attributes
     username = models.CharField(max_length=50)
@@ -11,11 +12,13 @@ class User(models.Model):
     def __str__(self):
         return self.username
 
+
 class Authenticator(models.Model):
     # attributes
     authenticator = models.CharField(primary_key=True, max_length=64)
     user_id = models.CharField(max_length=7)
     date_created = models.DateTimeField(auto_now_add=True)
+
 
 class Listing(models.Model):
     # attributes
@@ -48,7 +51,7 @@ class Listing(models.Model):
         ("SOLD", "Sold")
     )
     availability_status = models.CharField(max_length=5, choices=AVAILABILITY_CHOICES, default="AVAIL")
-    #photos = models.ImageField() // will add later, not important for now
+    # photos = models.ImageField() // will add later, not important for now
     description = models.TextField()
     post_date = models.DateField(auto_now_add=True)
     post_expiration_date = models.DateField()

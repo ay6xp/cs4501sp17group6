@@ -90,12 +90,15 @@ def index(request):
         # check dates
         if created_date <= datetime.now().date() - timedelta(days=2):
             # this is one we should delete
-            requests.post(settings.API_DIR + 'authenticators/delete/', data={'auth_token':auths_res['info'][i]['authenticator']})
+            requests.post(settings.API_DIR + 'authenticators/delete/',
+                          data={'auth_token': auths_res['info'][i]['authenticator']})
         else:
             # this is not one we should delete
             pass
 
-    return JsonResponse({'all_listings': listings_res['info'], 'all_users': users_res['info'], 'exp_soon_listings': exp_soon_list, 'recent_listings': l_recent_list, 'recent_users': u_recent_list})
+    return JsonResponse(
+        {'all_listings': listings_res['info'], 'all_users': users_res['info'], 'exp_soon_listings': exp_soon_list,
+         'recent_listings': l_recent_list, 'recent_users': u_recent_list})
 
 
 #
@@ -319,30 +322,34 @@ def logout(request):
 
 
 def register(request):
-	username = request.POST.get('username', 'none')
-	password = request.POST.get('password', 'none')
-	email = request.POST.get('email', 'none')
-	phone_num = request.POST.get('phone_num', 'none')
-	user = requests.post(settings.API_DIR + 'users/new/', data = {'username':username, 'password':password, 'email':email, 'phone_num':phone_num}).json()
-	return JsonResponse(user, safe=False)
+    username = request.POST.get('username', 'none')
+    password = request.POST.get('password', 'none')
+    email = request.POST.get('email', 'none')
+    phone_num = request.POST.get('phone_num', 'none')
+    user = requests.post(settings.API_DIR + 'users/new/',
+                         data={'username': username, 'password': password, 'email': email,
+                               'phone_num': phone_num}).json()
+    return JsonResponse(user, safe=False)
+
 
 def login(request):
-	username = request.POST.get('username', 'none')
-	pass_attempt = request.POST.get('password', 'none')
+    username = request.POST.get('username', 'none')
+    pass_attempt = request.POST.get('password', 'none')
 
-	resp = requests.get(settings.API_DIR + 'users/' + username + '/').json()
+    resp = requests.get(settings.API_DIR + 'users/' + username + '/').json()
 
-	if resp['ok']:
-		curr_user = resp['info']
-		curr_pass = curr_user['password']
+    if resp['ok']:
+        curr_user = resp['info']
+        curr_pass = curr_user['password']
 
-		if hashers.check_password(pass_attempt, curr_pass):
-			# passwords match! create an authenticator
-			auth_response = requests.post(settings.API_DIR + 'authenticators/new/', data={"user_id":curr_user['pk']}).json()
-			return JsonResponse(auth_response)
-		else:
-			response_data = {}
-			response_data['ok'] = False
-			response_data['message'] = 'invalid password'
-			return JsonResponse(response_data)
-	return JsonResponse(resp)
+        if hashers.check_password(pass_attempt, curr_pass):
+            # passwords match! create an authenticator
+            auth_response = requests.post(settings.API_DIR + 'authenticators/new/',
+                                          data={"user_id": curr_user['pk']}).json()
+            return JsonResponse(auth_response)
+        else:
+            response_data = {}
+            response_data['ok'] = False
+            response_data['message'] = 'invalid password'
+            return JsonResponse(response_data)
+    return JsonResponse(resp)
