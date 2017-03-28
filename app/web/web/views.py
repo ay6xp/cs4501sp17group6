@@ -10,6 +10,7 @@ from django.conf import settings
 from .forms import RegisterForm, LoginForm, ListingForm
 from .forms import LoginForm
 from django.core.urlresolvers import reverse
+from django.contrib import messages
 
 
 def index(request):
@@ -112,7 +113,6 @@ def register(request):
 
     # Creates a new instance of our registration form and gives it our POST data
     f = RegisterForm(request.POST)
-    print('heyo everything is bad here')
 
     # Check if the form instance is invalid
     if not f.is_valid():
@@ -133,6 +133,7 @@ def register(request):
     # Check if the experience layer said they gave us incorrect information
     if not response['ok']:
         # Couldn't log them in, send them back to login page with error
+        messages.add_message(request, messages.INFO, response['message'])
         return render(request, 'home/register.html', {'msg': "Invalid signup", 'form': RegisterForm})
 
     return HttpResponseRedirect(next)
