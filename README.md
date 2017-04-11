@@ -6,3 +6,5 @@ Project 2 info: https://github.com/kaw3ut/cs4501sp17group6/blob/master/docs/Proj
 Project 3 info: https://github.com/kaw3ut/cs4501sp17group6/blob/master/docs/Project3.md
 
 Project 4 info: https://github.com/kaw3ut/cs4501sp17group6/blob/master/docs/Project4.md
+
+Project 5 info: https://github.com/kaw3ut/cs4501sp17group6/blob/master/docs/Project5.md
