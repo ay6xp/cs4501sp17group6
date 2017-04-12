@@ -1,53 +1,53 @@
 models:
-    image: tp33/django
-    external_links:
-      -  mysql:db
-    volumes:
-      - ./myproject:/app
-    ports:
-      - "8001:8000"
-    command: bash -c "python manage.py makemigrations studenthousing && python manage.py migrate && python manage.py loaddata db_init.json && mod_wsgi-express start-server --working-directory ./ --reload-on-changes --log-to-terminal --url-alias /static static ./myproject/wsgi.py"
+	image: tp33/django
+	external_links:
+		-  mysql:db
+	volumes:
+		- ./myproject:/app
+	ports:
+		- "8001:8000"
+	command: bash -c "python manage.py makemigrations studenthousing && python manage.py migrate && python manage.py loaddata db_init.json && mod_wsgi-express start-server --working-directory ./ --reload-on-changes --log-to-terminal --url-alias /static static ./myproject/wsgi.py"
 
 exp:
-  image: tp33/django
-  links:
-    - models:models-api
-  volumes:
-    - ./exp:/app
-  ports:
-    - "8002:8000"
-  command: bash -c "pip install requests && mod_wsgi-express start-server --reload-on-changes --log-to-terminal ./exp/wsgi.py"
+	image: tp33/django
+	links:
+		- models:models-api
+	volumes:
+		- ./exp:/app
+	ports:
+		- "8002:8000"
+	command: bash -c "pip install requests && mod_wsgi-express start-server --reload-on-changes --log-to-terminal ./exp/wsgi.py"
 
 web:
-  image: tp33/django
-  links:
-    - exp:exp-api
-  volumes:
-    - ./web:/app
-  ports:
-    - "8000:8000"
-  command: bash -c "pip install requests && mod_wsgi-express start-server --reload-on-changes --log-to-terminal ./web/wsgi.py"
+	image: tp33/django
+	links:
+		- exp:exp-api
+	volumes:
+		- ./web:/app
+	ports:
+		- "8000:8000"
+	command: bash -c "pip install requests && mod_wsgi-express start-server --reload-on-changes --log-to-terminal ./web/wsgi.py"
 
 kafka:
-  image: spotify/kafka
-  container_name: kafka
-  environment:
-    ADVERTISED_HOST: kafka
-    ADVERTISED_PORT: 9092
-  hostname: kafka
+	image: spotify/kafka
+	container_name: kafka
+	environment:
+		ADVERTISED_HOST: kafka
+		ADVERTISED_PORT: 9092
+	hostname: kafka
 
 es:
-   image: elasticsearch:2.0
-   container_name: es
-   ports:
-      - "9200:9200"
+	 image: elasticsearch:2.0
+	 container_name: es
+	 ports:
+			- "9200:9200"
 
 batch:
-   image: tp33/django
-   container_name: batch
-   links:
-      - kafka:kafka
-      - es:es
-   volumes:
-      - ./batch:/app
-   command: "python batch.py"
+	 image: tp33/django
+	 container_name: batch
+	 links:
+			- kafka:kafka
+			- es:es
+	 volumes:
+			- ./batch:/app
+	 command: "python batch.py"
