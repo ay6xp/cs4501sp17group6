@@ -589,6 +589,7 @@ def auth_delete(request):
             response_data = {}
             response_data['ok'] = True
             response_data['message'] = 'authenticator successfully deleted'
+            return JsonResponse(response_data)
 
         else:
             # invalid POST request
