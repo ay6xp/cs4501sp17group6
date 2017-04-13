@@ -266,9 +266,8 @@ def search(request):
 
     response = requests.post(settings.API_DIR + 'search/').json()
     if not response['ok']:
-
-    # Check if the experience layer said they gave us incorrect information
-        return render(request, 'home/search.html', {'msg': "Invalid search", 'form': f, 'submit':False})
+        # Check if the experience layer said they gave us incorrect information
+        return render(request, 'home/search.html', {'msg': "Invalid search.", 'form': f, 'submit':False})
 
     return render(request, 'home/search.html', {'search_input': search_input, 'results_info': response['info'], 
                                                         'form': f, 'submit': True})
