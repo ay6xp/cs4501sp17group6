@@ -258,16 +258,14 @@ def search(request):
     if not f.is_valid():
         form = SearchForm()
         # Form was bad -- send them back to search page and show them an error
-        return render(request, 'home/search.html',
-                      {'msg': "Invalid search!!!!", 'form': form, 'submit': False})
+        return render(request, 'home/search.html',{'msg': "Invalid input", 'form': form})
 
     # Sanitize fields
     search_input = f.cleaned_data['search_input']
 
-    response = requests.post(settings.API_DIR + 'search/').json()
+    response = requests.post(settings.API_DIR + 'search/', data={'search_input':search_input}).json()
     if not response['ok']:
         # Check if the experience layer said they gave us incorrect information
-        return render(request, 'home/search.html', {'msg': "Invalid search", 'form': f, 'submit': False})
+        return render(request, 'home/search.html', {'msg': response['message'], 'form': f})
 
-    return render(request, 'home/search.html', {'search_input': search_input, 'results_info': response['info'],
-                                                'form': f, 'submit': True})
+    return render(request, 'home/search.html', {'search_input': search_input, 'results_info': response['info'], 'form': f, 'submit': True})

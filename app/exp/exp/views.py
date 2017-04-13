@@ -5,6 +5,7 @@ from django.conf import settings
 from datetime import datetime, timedelta
 from django.contrib.auth import hashers
 from kafka import KafkaProducer
+from elasticsearch import Elasticsearch
 
 
 def index(request):
@@ -375,12 +376,13 @@ def search(request):
         listing_data = result['hits']['hits']
         listing_list = []
         for listing in listing_data:
+            print(listing)
             current_listing = {}
-            current_listing['title'] = listing['title']
-            current_listing['description'] = listing['description']
-            current_listing['id'] = listing['id']
+            current_listing['title'] = listing['_source']['title']
+            current_listing['description'] = listing['_source']['description']
+            current_listing['id'] = listing['_source']['id']
             listing_list.append(current_listing)
         if not listing_list:
              return JsonResponse({'ok':False, 'message': 'No results found.'})
         return JsonResponse({'ok':True, 'info':listing_list})
-    return JsonResponse({'ok':False, 'message':'No results found.'})
+    return JsonResponse({'ok':False, 'message':'Error'})

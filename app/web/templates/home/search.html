@@ -40,7 +40,7 @@
 
 		{% for listing in results_info %}
 	    <tr>
-	      <td><a href = "{% url 'listing' %}/listing.id">{{listing.title}}</a></td>
+	      <td><a href = "{% url 'listing' %}{{ listing.id }}">{{listing.title}}</a></td>
 	      <td>{{listing.description}}</td>
 	    </tr>
 		{% endfor %}
