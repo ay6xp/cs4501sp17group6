@@ -244,6 +244,7 @@ def register(request):
     messages.add_message(request, messages.INFO, response['message'])
     return HttpResponseRedirect(next)
 
+
 def search(request):
     # what kind of request?
     if request.method == 'GET':
@@ -258,16 +259,15 @@ def search(request):
         form = SearchForm()
         # Form was bad -- send them back to search page and show them an error
         return render(request, 'home/search.html',
-                      {'msg': "Invalid search.", 'form': form, 'submit':False})
+                      {'msg': "Invalid search!!!!", 'form': form, 'submit': False})
 
     # Sanitize fields
     search_input = f.cleaned_data['search_input']
 
     response = requests.post(settings.API_DIR + 'search/').json()
     if not response['ok']:
+        # Check if the experience layer said they gave us incorrect information
+        return render(request, 'home/search.html', {'msg': "Invalid search", 'form': f, 'submit': False})
 
-    # Check if the experience layer said they gave us incorrect information
-        return render(request, 'home/search.html', {'msg': "Invalid search", 'form': f, 'submit':False})
-
-    return render(request, 'home/search.html', {'search_input': search_input, 'results_info': response['info'], 
-                                                        'form': f, 'submit': True})
+    return render(request, 'home/search.html', {'search_input': search_input, 'results_info': response['info'],
+                                                'form': f, 'submit': True})
