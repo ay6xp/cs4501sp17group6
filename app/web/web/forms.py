@@ -62,3 +62,6 @@ class ListingForm(forms.Form):
     images = forms.BooleanField(required=False)
     gym = forms.BooleanField(required=False)
     maintenance = forms.BooleanField(required=False)
+
+class SearchForm(forms.Form):
+    search_input = forms.CharField(max_length=50, required=True)

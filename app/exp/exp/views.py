@@ -80,21 +80,22 @@ def index(request):
     auths_res = requests.get(settings.API_DIR + 'authenticators/').json()
 
     # check to see if each post's expiration date is within 3 days of now
-    for i in range(len(auths_res['info'])):
-        # get string representation of auth's date
-        created_str_dt = auths_res['info'][i]['date_created']
-        created_str_d = created_str_dt[:-14]
-        # convert into date object
-        created_date = datetime.strptime(created_str_d, '%Y-%m-%d').date()
+    if 'info' in auths_res:
+        for i in range(len(auths_res['info'])):
+            # get string representation of auth's date
+            created_str_dt = auths_res['info'][i]['date_created']
+            created_str_d = created_str_dt[:-14]
+            # convert into date object
+            created_date = datetime.strptime(created_str_d, '%Y-%m-%d').date()
 
-        # check dates
-        if created_date <= datetime.now().date() - timedelta(days=2):
-            # this is one we should delete
-            requests.post(settings.API_DIR + 'authenticators/delete/',
-                          data={'auth_token': auths_res['info'][i]['authenticator']})
-        else:
-            # this is not one we should delete
-            pass
+            # check dates
+            if created_date <= datetime.now().date() - timedelta(days=2):
+                # this is one we should delete
+                requests.post(settings.API_DIR + 'authenticators/delete/',
+                              data={'auth_token': auths_res['info'][i]['authenticator']})
+            else:
+                # this is not one we should delete
+                pass
 
     return JsonResponse(
         {'all_listings': listings_res['info'], 'all_users': users_res['info'], 'exp_soon_listings': exp_soon_list,
@@ -353,3 +354,26 @@ def login(request):
             response_data['message'] = 'invalid password'
             return JsonResponse(response_data)
     return JsonResponse(resp)
+
+def search(request):
+    if request.method != 'POST':
+        return JsonResponse({'ok': False, 'message': 'This action only accepts POST requests.'})
+    if 'search_input' not in request.POST:
+        return JsonResponse({'ok': False, 'message': 'No search query provided.'})
+
+    search_input = request.POST.get('search_input')
+    es = Elasticsearch(['es'])
+    if(es.indices.exists('listing_index')):
+        result = es.search(index='listing_index', body={'query': {'query_string': {'query': search_input}}, 'size': 10})
+        listing_data = result['hits']['hits']
+        listing_list = []
+        for listing in listing_data:
+            current_listing = {}
+            current_listing['title'] = listing['title']
+            current_listing['description'] = listing['description']
+            current_listing['id'] = listing['id']
+            listing_list.append(current_listing)
+        if not job_list:
+             return JsonResponse({'ok':False, 'message': 'No results found.'})
+        return JsonResponse({'ok':True, 'info':listing_list})
+    return JsonResponse({'ok':False, 'message':'No results found.'})
