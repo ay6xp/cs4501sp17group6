@@ -373,7 +373,7 @@ def search(request):
             current_listing['description'] = listing['description']
             current_listing['id'] = listing['id']
             listing_list.append(current_listing)
-        if not job_list:
+        if not listing_list:
              return JsonResponse({'ok':False, 'message': 'No results found.'})
         return JsonResponse({'ok':True, 'info':listing_list})
     return JsonResponse({'ok':False, 'message':'No results found.'})

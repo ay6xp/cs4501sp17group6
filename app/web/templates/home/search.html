@@ -5,8 +5,8 @@
 {% endblock %}
 
 {% block content %}
-	{% if form.errors %}
-        <div class="alert alert-warning" role="alert">Uh oh!</div>
+	{% if msg %}
+        <div class="alert alert-warning" role="alert">{{ msg }}</div>
     {% endif %}
 
     <div class="form-center-small">
@@ -27,4 +27,24 @@
             </div>
         </div>
     </div>
+    {% if submit %}
+	<h2> Results for search: "{{ search_input }}"</h2>
+	<table class="table table-striped table-hover ">
+	  <thead>
+	    <tr>
+	      <th>Name</th>
+	      <th>Description</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+
+		{% for listing in results_info %}
+	    <tr>
+	      <td><a href = "{% url 'listing' %}/listing.id">{{listing.title}}</a></td>
+	      <td>{{listing.description}}</td>
+	    </tr>
+		{% endfor %}
+	  </tbody>
+	</table>
+	{% endif %}
 {% endblock %}
