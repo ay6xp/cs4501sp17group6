@@ -7,6 +7,8 @@ urlpatterns = [
     url(r'^api/v1/login/', views.login, name='login'),
     url(r'^api/v1/logout/', views.logout, name='logout'),
     url(r'^api/v1/index/$', views.index, name='index'),
+    url(r'^api/v1/search/$', views.search, name='search'),
+    
     # listings
     url(r'^api/v1/listings/$', views.get_all_listings, name='get_all_listings'),
     url(r'^api/v1/listings/(?P<id>[0-9]+)/$', views.get_listing, name='get_listing'),

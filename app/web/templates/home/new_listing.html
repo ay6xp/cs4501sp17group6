@@ -6,8 +6,8 @@
 
 {% block content %}
 
-    {% if form.errors %}
-        <div class="alert alert-warning" role="alert">Uh oh!</div>
+    {% if msg %}
+        <div class="alert alert-warning" role="alert">{{msg}}</div>
     {% endif %}
 
     <div class="form-center-small">
