@@ -58,8 +58,7 @@ def new_listing(request):
         form = ListingForm(request.POST)
         if not form.is_valid():
             form = ListingForm()
-            return render(request, 'home/new_listing.html',
-                          {'form': form, 'auth': auth, 'msg': 'Invalid information provided.'})
+            return render(request, 'home/new_listing.html', {'form': form, 'auth': auth, 'msg': 'Invalid information provided.'})
 
         # get clean info
         title = form.cleaned_data['title']
@@ -182,7 +181,7 @@ def login(request):
         messages.add_message(request, messages.INFO, response['message'])
         return render(request, 'home/login.html', {'errorMessage': response['message'], 'form': login_form})
     # made it this far, so they can log in
-    auth_token = response['info']
+    auth_token = response['info']['auth_token']
     next = HttpResponseRedirect(reverse('index'))
     next.set_cookie('auth', auth_token)
     return next

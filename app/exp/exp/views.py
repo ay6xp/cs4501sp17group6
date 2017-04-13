@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from django.conf import settings
 from datetime import datetime, timedelta
 from django.contrib.auth import hashers
+from kafka import KafkaProducer
 
 
 def index(request):
@@ -262,7 +263,13 @@ def new_listing(request):
             'gym': gym,
             'maintenance': maintenance,
             'user': user}).json()
-    return JsonResponse(resp)
+
+        if not resp['ok']:
+            return JsonResponse(resp) #if the object isn't created
+        producer = KafkaProducer(bootstrap_servers='kafka:9092')
+        some_new_listing = {'title': title, 'description': description, 'id':resp['info']['pk']}
+        producer.send('new-listings-topic', json.dumps(some_new_listing).encode('utf-8'))
+        return JsonResponse(resp)
 
 
 #
