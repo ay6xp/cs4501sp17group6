@@ -181,7 +181,7 @@ def login(request):
         messages.add_message(request, messages.INFO, response['message'])
         return render(request, 'home/login.html', {'errorMessage': response['message'], 'form': login_form})
     # made it this far, so they can log in
-    auth_token = response['info']['auth_token']
+    auth_token = response['info']
     next = HttpResponseRedirect(reverse('index'))
     next.set_cookie('auth', auth_token)
     return next
