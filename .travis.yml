@@ -6,7 +6,7 @@ install:
   - docker pull tp33/django
   - docker pull mysql:5.7.14
   - mkdir db
-  - docker run --name mysql -d -e MYSQL_ROOT_PASSWORD='$3cureUS' -v /db:/var/lib/mysql  mysql:5.7.14
+  - docker run --name mysql -d -e MYSQL_ROOT_PASSWORD='$3cureUS' -v `pwd`/db:/var/lib/mysql mysql:5.7.14
   - sleep 15
   - docker run -it --name mysql-cmdline --rm --link mysql:db mysql:5.7.14
   - mysql -uroot -p'$3cureUS' -h db -v -e "CREATE DATABASE cs4501 CHARACTER SET utf8; CREATE DATABASE test_cs4501 CHARACTER SET utf8; CREATE USER 'www'@'%' IDENTIFIED BY '\$3cureUS'; GRANT ALL PRIVILEGES ON *.* TO 'www'@'%';"
