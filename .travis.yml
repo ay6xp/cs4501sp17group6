@@ -20,3 +20,5 @@ after_script:
   - docker stop mysqldocker rm 'docker ps -a -q'
   - docker rmi 'docker images -q'
   - rm -rf db
+notifications:
+  email: false
