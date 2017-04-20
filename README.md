@@ -1,4 +1,4 @@
-# cs4501sp17group6
+# cs4501sp17group6 [![Build Status](https://travis-ci.org/kaw3ut/cs4501sp17group6.svg?branch=master)](https://travis-ci.org/kaw3ut/cs4501sp17group6)
 
 ## Index:
 Project 2 info: https://github.com/kaw3ut/cs4501sp17group6/blob/master/docs/Project2.md
