@@ -1,12 +1,22 @@
-language: python
-python:
-  - "3.5"
-install: 
-  - pip install -q Django==1.10
-  - pip install requests
-  - pip install MYSQL-python
-before_script:
-  - cd app/myproject
-script: python manage.py test
+sudo: require
+dist: trusty
 services:
-  - mysql
+  - docker
+install: 
+  - docker pull tp33/django
+  - docker pull mysql:5.7.14
+  - mkdir db
+  - docker run --name mysql -d -e MYSQL\_ROOT\_PASSWORD='$3cureUS' -v /db:/var/lib/mysql  mysql:5.7.14
+  - sleep 15
+  - docker run -it --name mysql-cmdline --link mysql:db mysql:5.7.14 bash
+  - mysql -uroot -p'$3cureUS' -h db -v -e "CREATE DATABASE cs4501 CHARACTER SET utf8; CREATE DATABASE test_cs4501 CHARACTER SET utf8; CREATE USER 'www'@'%' IDENTIFIED BY '\$3cureUS'; GRANT ALL PRIVILEGES ON *.* TO 'www'@'%';"
+before_script:
+  - docker-compose up
+script: 
+  - docker exec -it app_models_1 bash -c "python manage.py test"
+after_script:
+  - docker-compose stop
+  - docker-compose down
+  - docker stop mysqldocker rm 'docker ps -a -q'
+  - docker rmi 'docker images -q'
+  - rm -rf db
