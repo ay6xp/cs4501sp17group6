@@ -5,6 +5,7 @@ services:
 install: 
   - docker pull tp33/django
   - docker pull mysql:5.7.14
+  - rm -rf db
   - mkdir db
   - docker run --name mysql -d -e MYSQL_ROOT_PASSWORD='$3cureUS' -v `pwd`/db:/var/lib/mysql mysql:5.7.14
   - sleep 15
@@ -14,7 +15,6 @@ before_script:
   - docker-compose up -d
 script: 
   - docker exec -it app_models_1 bash -c "python manage.py test"
-  - yes
 after_script:
   - docker-compose stop
   - docker-compose down
