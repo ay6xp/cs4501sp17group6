@@ -14,6 +14,7 @@ before_script:
   - docker-compose up -d
 script: 
   - docker exec -it app_models_1 bash -c "python manage.py test"
+  - yes
 after_script:
   - docker-compose stop
   - docker-compose down
