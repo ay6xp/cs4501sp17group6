@@ -7,3 +7,5 @@ install:
 before_script:
   - cd app/myproject
 script: python manage.py test
+services:
+  - mysql
