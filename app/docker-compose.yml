@@ -53,3 +53,11 @@ batch:
    volumes:
       - ./batch:/app
    command: "python batch.py"
+
+selenium-chrome:
+ image: selenium/standalone-chrome
+ container_name: selenium-chrome
+ links:
+   - web:web
+ ports:
+   - "8010:8000"
