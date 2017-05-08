@@ -162,6 +162,5 @@ class SeleniumTests(TestCase):
     def test_test(self):
         driver = self.driver
         #driver.get("http://192.168.99.100:8000/")
-        print("HEY YA BY OUTKAST")
-        driver.get("http://www.google.com")
-        assert "google" in driver.page_source
+        driver.get("http://192.168.99.100:8000/home/")
+        assert "Welcome to Student Housing!" in driver.page_source
