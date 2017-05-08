@@ -5,6 +5,8 @@ import json
 import os
 import hmac
 from django.conf import settings
+from selenium import webdriver 
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 
 class ListingTestPopulated(TestCase):
@@ -148,3 +150,17 @@ class UserTestEmpty(TestCase):
     def test_show_nonexistent_user(self):
         response = self.client.get(reverse('user_detail', kwargs={'id': 757}))
         self.assertContains(response, 'no user exists')
+
+
+class SeleniumTests(TestCase):
+    def setUp(self):
+       self.driver = webdriver.Remote(
+           command_executor='http://selenium-chrome:4444/wd/hub/',
+           desired_capabilities=DesiredCapabilities.CHROME
+        )
+
+    def test_test(self):
+        driver = self.driver
+        #driver.get("http://192.168.99.100:8000/")
+        driver.get("http://192.168.99.100:8000/home/")
+        assert "Welcome to Student Housing!" in driver.page_source

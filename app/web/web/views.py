@@ -15,6 +15,7 @@ from django.contrib import messages
 
 def index(request):
     req = requests.get(settings.API_DIR + 'index/').json()
+    #print("test")
     return render(request, 'home/index.html', req)
 
 

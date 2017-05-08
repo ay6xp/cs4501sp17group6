@@ -385,4 +385,4 @@ def search(request):
         if not listing_list:
              return JsonResponse({'ok':False, 'message': 'No results found.'})
         return JsonResponse({'ok':True, 'info':listing_list})
-    return JsonResponse({'ok':False, 'message':'Elasticsearch error'})
+    return JsonResponse({'ok':False, 'message':'No results indexed in Elasticsearch'})
