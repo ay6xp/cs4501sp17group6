@@ -54,7 +54,7 @@ batch:
       - es:es
    volumes:
       - ./batch:/app
-   command: "pip install selenium && python batch.py"
+   command: "python batch.py"
 
 selenium-chrome:
  image: selenium/standalone-chrome
