@@ -20,7 +20,7 @@ exp:
     - "8002:8000"
   command: bash -c "pip install requests && mod_wsgi-express start-server --reload-on-changes --log-to-terminal ./exp/wsgi.py"
 
-web:
+web1:
   image: tp33/django
   links:
     - exp:exp-api
@@ -28,6 +28,26 @@ web:
     - ./web:/app
   ports:
     - "8000:8000"
+  command: bash -c "pip install requests && mod_wsgi-express start-server --reload-on-changes --log-to-terminal ./web/wsgi.py"
+
+web2:
+  image: tp33/django
+  links:
+    - exp:exp-api
+  volumes:
+    - ./web:/app
+  ports:
+    - "8003:8000"
+  command: bash -c "pip install requests && mod_wsgi-express start-server --reload-on-changes --log-to-terminal ./web/wsgi.py"
+
+web3:
+  image: tp33/django
+  links:
+    - exp:exp-api
+  volumes:
+    - ./web:/app
+  ports:
+    - "8004:8000"
   command: bash -c "pip install requests && mod_wsgi-express start-server --reload-on-changes --log-to-terminal ./web/wsgi.py"
 
 kafka:
@@ -53,3 +73,13 @@ batch:
    volumes:
       - ./batch:/app
    command: "python batch.py"
+
+haproxy:
+   build: ./loadBalance
+   container_name: haproxy
+   ports:
+      - "8005:8000"
+   links:
+      - web1:web1
+      - web2:web2
+      - web3:web3
