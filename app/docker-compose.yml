@@ -2,13 +2,11 @@ models:
   image: tp33/django
   external_links:
     - mysql:db
-  links:
-    - selenium-chrome:selenium-chrome
   volumes:
     - ./myproject:/app
   ports:
     - "8001:8000"
-  command: bash -c "python manage.py makemigrations studenthousing && python manage.py migrate && python manage.py loaddata db_init.json && pip install selenium && mod_wsgi-express start-server --working-directory ./ --reload-on-changes --log-to-terminal --url-alias /static static ./myproject/wsgi.py"
+  command: bash -c "python manage.py makemigrations studenthousing && python manage.py migrate && python manage.py loaddata db_init.json && mod_wsgi-express start-server --working-directory ./ --reload-on-changes --log-to-terminal --url-alias /static static ./myproject/wsgi.py"
 
 exp:
   image: tp33/django
@@ -91,3 +89,13 @@ selenium-chrome:
  container_name: selenium-chrome
  ports:
    - "4444:8000"
+
+selenium:
+  image: tp33/django
+  container_name: selenium
+  links:
+    - web1:web1
+    - selenium-chrome:selenium-chrome
+  volumes:
+    - ./selenium:/app
+  command: bash -c "pip install selenium==2.48 && python selenium_tests.py"
