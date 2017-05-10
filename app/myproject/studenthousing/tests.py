@@ -5,8 +5,6 @@ import json
 import os
 import hmac
 from django.conf import settings
-from selenium import webdriver 
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 
 class ListingTestPopulated(TestCase):
