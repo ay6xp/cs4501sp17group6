@@ -17,11 +17,13 @@ class SeleniumTests(unittest.TestCase):
 		assert "Welcome to Student Housing!" in driver.page_source
 
 	#test register
-	def register(self):
+	def test_register(self):
 		username = "test11"
 		password = "password"
 		email = "test1@gmail.com"
 		phone_num = "1234567890"
+
+		driver = self.driver
 		driver.get("http://192.168.99.100:8000/register/")
 		driver.find_element_by_id("id_username").send_keys(username)
 		driver.find_element_by_id("id_password").send_keys(password)
@@ -32,9 +34,11 @@ class SeleniumTests(unittest.TestCase):
 		assert "successfully created" in driver.page_source
 
 	#test login
-	def login(self):
+	def test_login(self):
 		username = "test11"
 		password = "password"
+
+		driver = self.driver
 		driver.get("http://192.168.99.100:8000/login/")
 		driver.find_element_by_id("id_username").send_keys(username)
 		driver.find_element_by_id("id_password").send_keys(password)
