@@ -18,7 +18,5 @@ class SeleniumTests(TestCase):
 
     def test_test(self):
         driver = self.driver
-        #driver.get("http://192.168.99.100:8000/")
-        #driver.get("http://web1:8000/home/")
         driver.get("http://107.170.92.232:8000/home/")
         assert "Welcome to Student Housing!" in driver.page_source
