@@ -8,14 +8,13 @@ install:
   - mkdir db
   - docker run --name mysql -d -e MYSQL_ROOT_PASSWORD='$3cureUS' -v `pwd`/db:/var/lib/mysql mysql:5.7.14
   - sleep 15
-  - docker run -it --name mysql-cmdline --rm --link mysql:db mysql:5.7.14 mysql -uroot -p'$3cureUS' -h db -v -e "CREATE DATABASE cs4501 CHARACTER SET utf8; CREATE DATABASE test_cs4501 CHARACTER SET utf8; CREATE USER 'www'@'%' IDENTIFIED BY '\$3cureUS'; GRANT ALL PRIVILEGES ON *.* TO 'www'@'%';"
+  - docker run -it --name mysql-cmdline --rm --link mysql:db mysql:5.7.14 mysql -uroot -p'$3cureUS' -h db -v -e "DROP DATABASE test_cs4501; CREATE DATABASE cs4501 CHARACTER SET utf8; CREATE DATABASE test_cs4501 CHARACTER SET utf8; CREATE USER 'www'@'%' IDENTIFIED BY '\$3cureUS'; GRANT ALL PRIVILEGES ON *.* TO 'www'@'%';"
 before_script:
   - cd app
   - docker-compose up -d
 script: 
   - docker exec -it app_models_1 bash -c "python manage.py test --pattern="tests.py""
 after_script:
-  docker run -it --name mysql-cmdline --rm --link mysql:db mysql:5.7.14 mysql -uroot -p'$3cureUS' -h db -v -e "DROP DATABASE test_cs4501;"
   - docker-compose stop
   - docker-compose down
   - docker stop mysqldocker rm 'docker ps -a -q'
