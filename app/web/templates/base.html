@@ -27,7 +27,7 @@
                     <a href="{% url 'login' %}"><span class="glyphicon glyphicon-log-in"></span> Login</a>
                 </p>
             {% else %}
-                <p class="navbar-text navbar-right">
+                <p id="logged_in_status" class="navbar-text navbar-right">
                     <span>You are logged in.</span>
                     <a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
                 </p>

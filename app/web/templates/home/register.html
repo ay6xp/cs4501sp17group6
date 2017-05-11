@@ -25,7 +25,7 @@
         <form action="{% url 'register' %}" method="post" class="form">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit" class="btn btn-primary">Register</button>
+            <button id="id_register_btn" type="submit" class="btn btn-primary">Register</button>
         </form>
     {% endif %}
 
